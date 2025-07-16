@@ -6,6 +6,7 @@ import { loginSchema } from "../schema/loginSchema";
 import { comparePassword } from "../utils/comparePassword";
 import jwt from "jsonwebtoken";
 import { AuthorizedRequest } from "../middleware/auth.middleware";
+import { passwordSchema } from "../schema/passwordSchema";
 
 const client = new PrismaClient();
 
@@ -102,4 +103,47 @@ const logoutUser = async (
   });
 };
 
-export { registerUser, loginUser, logoutUser };
+const updatePassword = async (
+  req: AuthorizedRequest,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { current_password, password } = passwordSchema.parse(req.body);
+    const id = req.user?.id;
+
+    const user = await client.user.findUnique({
+      where: { id },
+    });
+
+    if (!user?.password) {
+      return;
+    }
+
+    //verify current
+    const isPasswordValid = await comparePassword(
+      current_password,
+      user?.password,
+    );
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: "Wrong current password" });
+    }
+
+    const hashedPassword = await hashPassword(password);
+
+    await client.user.update({
+      where: { id },
+      data: {
+        password: hashedPassword,
+      },
+    });
+    res.status(200).json({
+      message: "Password updated successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { registerUser, loginUser, logoutUser, updatePassword };

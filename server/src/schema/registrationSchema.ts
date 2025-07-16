@@ -9,7 +9,7 @@ export const registrationSchema = z.object({
     .refine(
       (val) => {
         const password = zxcvbn(val);
-        return password.score >= 1;
+        return password.score >= 2;
       },
       {
         message:
