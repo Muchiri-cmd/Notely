@@ -5,6 +5,7 @@ import { registrationSchema } from "../schema/registrationSchema";
 import { loginSchema } from "../schema/loginSchema";
 import { comparePassword } from "../utils/comparePassword";
 import jwt from "jsonwebtoken";
+import { AuthorizedRequest } from "../middleware/auth.middleware";
 
 const client = new PrismaClient();
 
@@ -91,4 +92,14 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { registerUser, loginUser };
+const logoutUser = async (
+  req: AuthorizedRequest,
+  res: Response,
+  next: NextFunction,
+) => {
+  res.status(200).json({
+    message: "Logout successful.",
+  });
+};
+
+export { registerUser, loginUser, logoutUser };

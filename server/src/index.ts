@@ -2,10 +2,11 @@ import express from "express";
 import { Request, Response } from "express";
 import dotenv from "dotenv";
 import authRouter from "./routes/auth.routes";
+import userRouter from "./routes/user.routes";
 import { errorHandler } from "./middleware/errorHandler";
-import authenticateToken, {
-  AuthorizedRequest,
-} from "./middleware/auth.middleware";
+// import authenticateToken, {
+//   AuthorizedRequest,
+// } from "./middleware/auth.middleware";
 
 dotenv.config();
 
@@ -23,6 +24,9 @@ app.get("/", (_req: Request, res: Response) => {
 
 //Auth Views
 app.use("/api/auth", authRouter);
+
+//User Views
+app.use("/api/user", userRouter);
 
 app.use(errorHandler);
 const PORT = process.env.PORT || 4321;
