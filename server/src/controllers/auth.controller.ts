@@ -2,7 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import { hashPassword } from "../utils/hashPassword";
 import { registrationSchema } from "../schema/registrationSchema";
-import { ZodError } from "zod";
+import { loginSchema } from "../schema/loginSchema";
+import { comparePassword } from "../utils/comparePassword";
+import jwt from "jsonwebtoken";
 
 const client = new PrismaClient();
 
@@ -49,4 +51,44 @@ const registerUser = async (
   }
 };
 
-export { registerUser };
+const loginUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    //validate login reqs
+    const validatedPasswordReq = loginSchema.parse(req.body);
+
+    const { userName, email, password } = validatedPasswordReq;
+
+    const user = await client.user.findFirst({
+      where: {
+        OR: [{ userName }, { email }],
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        error: "User not found. Please confirm your login details.",
+      });
+    }
+
+    const isPasswordValid = await comparePassword(password, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: "Wrong password" });
+    }
+
+    const payload = {
+      id: user.id,
+      email: user.email,
+      userName: user.userName,
+    };
+    const token = jwt.sign(payload, process.env.JWT_SECRET!);
+
+    res.status(200).json({
+      token,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { registerUser, loginUser };
