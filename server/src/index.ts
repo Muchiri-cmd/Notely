@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import dotenv from "dotenv";
 import authRouter from "./routes/auth.routes";
 import userRouter from "./routes/user.routes";
+import entryRouter from "./routes/entry.routes";
 import { errorHandler } from "./middleware/errorHandler";
 // import authenticateToken, {
 //   AuthorizedRequest,
@@ -27,6 +28,9 @@ app.use("/api/auth", authRouter);
 
 //User Views
 app.use("/api/user", userRouter);
+
+//Entry Views
+app.use("/api/entries", entryRouter);
 
 app.use(errorHandler);
 const PORT = process.env.PORT || 4321;
