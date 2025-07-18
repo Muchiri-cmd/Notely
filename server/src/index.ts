@@ -5,6 +5,7 @@ import authRouter from "./routes/auth.routes";
 import userRouter from "./routes/user.routes";
 import entryRouter from "./routes/entry.routes";
 import { errorHandler } from "./middleware/errorHandler";
+import cors from "cors";
 // import authenticateToken, {
 //   AuthorizedRequest,
 // } from "./middleware/auth.middleware";
@@ -13,6 +14,16 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "http://192.168.1.120:5173",
+      "https://44aaec387b9d.ngrok-free.app",
+    ],
+    credentials: true,
+  }),
+);
 
 app.get("/", (_req: Request, res: Response) => {
   res.send("<h1>Welcome to Notely API</h1>");

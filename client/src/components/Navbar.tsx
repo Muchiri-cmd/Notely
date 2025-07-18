@@ -13,6 +13,7 @@ import { FaNoteSticky } from "react-icons/fa6";
 import { FaPlus, FaTimes, FaPowerOff, FaUserEdit } from "react-icons/fa";
 import { Fab } from "@mui/material";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -23,6 +24,14 @@ const Navbar = () => {
   const handleDrawerClose = () => {
     setDrawerOpen(false);
   };
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   return (
     <>
       <AppBar position="fixed">
@@ -240,6 +249,7 @@ const Navbar = () => {
                     backgroundColor: "#c53030",
                   },
                 }}
+                onClick={handleLogout}
               >
                 Sign Out
               </Button>

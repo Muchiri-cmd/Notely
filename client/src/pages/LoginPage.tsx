@@ -6,13 +6,39 @@ import {
   Button,
   Divider,
   InputAdornment,
+  Alert,
+  CircularProgress,
 } from "@mui/material";
 import { FaNoteSticky } from "react-icons/fa6";
 import { FaRegUser } from "react-icons/fa";
 import { TbLockPassword } from "react-icons/tb";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useLogin } from "../mutations/auth";
 
 const LoginPage = () => {
+  const [userNameOrEmail, setUserNameorEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const { mutateAsync: login, isError, error, isPending } = useLogin();
+
+  const navigate = useNavigate();
+
+  const handleLogin = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    const isEmail = userNameOrEmail.includes("@");
+
+    const payload = {
+      password,
+      ...(isEmail ? { email: userNameOrEmail } : { userName: userNameOrEmail }),
+    };
+
+    const res = await login(payload);
+    const token = res.data.token;
+    localStorage.setItem("token", token);
+    navigate("/dashboard");
+  };
+
   return (
     <Box
       sx={{
@@ -49,6 +75,8 @@ const LoginPage = () => {
           fullWidth
           label="Email or Username"
           type="text"
+          name="email"
+          autoComplete="email"
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -56,12 +84,17 @@ const LoginPage = () => {
               </InputAdornment>
             ),
           }}
+          value={userNameOrEmail}
+          onChange={(e) => setUserNameorEmail(e.target.value)}
+          required
         />
 
         <TextField
           fullWidth
           label="Password"
           type="password"
+          name="new-password"
+          autoComplete="new-password"
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -69,20 +102,57 @@ const LoginPage = () => {
               </InputAdornment>
             ),
           }}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
         />
 
-        <Button variant="contained" fullWidth sx={{ mt: 1 }}>
-          Sign In
+        {isError && (
+          <Alert severity="error" sx={{ width: "100%", mt: 1 }}>
+            {(error as any)?.response?.data?.errors?.[0]?.message ||
+              (error as any)?.response?.data?.error ||
+              (error as any)?.message ||
+              "Something went wrong"}
+          </Alert>
+        )}
+
+        <Button
+          variant="contained"
+          fullWidth
+          sx={{ mt: 1, bgcolor: isPending ? "grey.500" : "primary.main" }}
+          onClick={handleLogin}
+        >
+          {isPending ? (
+            <>
+              <CircularProgress size={20} sx={{ color: "white", mr: 1 }} />
+              Signing you in...
+            </>
+          ) : (
+            "Sign In"
+          )}
         </Button>
 
         <Divider flexItem />
 
-        <Box textAlign="center">
+        <Box
+          textAlign="center"
+          sx={{
+            display: "flex",
+            gap: 1,
+            alignItems: "center",
+          }}
+        >
           <Typography variant="body2" color="text.secondary">
             Don’t have an account?
           </Typography>
           <Button variant="text" size="small" component={Link} to="/register">
             Sign Up
+          </Button>
+        </Box>
+
+        <Box textAlign="end">
+          <Button variant="text" size="small">
+            Forgot Password
           </Button>
         </Box>
       </Paper>

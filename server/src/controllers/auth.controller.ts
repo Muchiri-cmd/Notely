@@ -22,14 +22,25 @@ const registerUser = async (
     const { firstName, lastName, email, userName, password, avatar } =
       validatedReq;
 
-    const existingUser = await client.user.findUnique({
+    const existingEmail = await client.user.findUnique({
       where: {
         email,
       },
     });
 
-    if (existingUser) {
+    const existingUserName = await client.user.findFirst({
+      where: {
+        userName,
+      },
+    });
+
+    if (existingEmail) {
       res.status(409).json({ error: "Email already registered" });
+      return;
+    }
+
+    if (existingUserName) {
+      res.status(409).json({ error: "Username already taken" });
       return;
     }
 
@@ -55,6 +66,7 @@ const registerUser = async (
 
 const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    // console.log(req.body)
     //validate login reqs
     const validatedPasswordReq = loginSchema.parse(req.body);
 
@@ -75,7 +87,9 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     const isPasswordValid = await comparePassword(password, user.password);
 
     if (!isPasswordValid) {
-      return res.status(401).json({ error: "Wrong password" });
+      return res
+        .status(401)
+        .json({ error: "Wrong password, please confirm your password" });
     }
 
     const payload = {

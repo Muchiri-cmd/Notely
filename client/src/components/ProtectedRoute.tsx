@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 
 const isLoggedIn = () => {
   const isLoggedIn = !!localStorage.getItem("token");
-  console.log(isLoggedIn);
+  // console.log(isLoggedIn);
   return isLoggedIn;
 };
 

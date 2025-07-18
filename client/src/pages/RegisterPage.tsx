@@ -6,13 +6,41 @@ import {
   Button,
   Divider,
   InputAdornment,
+  Alert,
+  CircularProgress,
 } from "@mui/material";
+import { useState } from "react";
 import { FaUserPlus, FaRegUser, FaRegCircleUser } from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
 import { TbLockPassword } from "react-icons/tb";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useRegister } from "../mutations/auth";
 
 const RegisterPage = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  // const [confirmPassword,setConfirmPassword]=useState('')
+
+  const { mutateAsync: register, isError, error, isPending } = useRegister();
+  const navigate = useNavigate();
+
+  const handleLogin = async (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    const data = {
+      firstName,
+      lastName,
+      userName,
+      email,
+      password,
+    };
+    await register(data);
+    navigate("/login");
+  };
+
   return (
     <Box
       sx={{
@@ -55,6 +83,8 @@ const RegisterPage = () => {
           <TextField
             fullWidth
             label="First Name"
+            name="given-name"
+            autoComplete="given-name"
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -62,10 +92,14 @@ const RegisterPage = () => {
                 </InputAdornment>
               ),
             }}
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
           />
           <TextField
             fullWidth
             label="Last Name"
+            name="family-name"
+            autoComplete="family-name"
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -73,12 +107,16 @@ const RegisterPage = () => {
                 </InputAdornment>
               ),
             }}
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
           />
         </Box>
 
         <TextField
           fullWidth
           label="Username"
+          name="username"
+          autoComplete="username"
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -86,12 +124,16 @@ const RegisterPage = () => {
               </InputAdornment>
             ),
           }}
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
         />
 
         <TextField
           fullWidth
           label="Email"
           type="email"
+          name="email"
+          autoComplete="email"
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -99,12 +141,16 @@ const RegisterPage = () => {
               </InputAdornment>
             ),
           }}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
 
         <TextField
           fullWidth
           label="Password"
           type="password"
+          name="new-password"
+          autoComplete="new-password"
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -112,9 +158,11 @@ const RegisterPage = () => {
               </InputAdornment>
             ),
           }}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
 
-        <TextField
+        {/* <TextField
           fullWidth
           label="Confirm Password"
           type="password"
@@ -125,10 +173,30 @@ const RegisterPage = () => {
               </InputAdornment>
             ),
           }}
-        />
+        /> */}
 
-        <Button variant="contained" fullWidth sx={{ mt: 1 }}>
-          Sign Up
+        {isError && (
+          <Alert severity="error" sx={{ width: "100%", mt: 1 }}>
+            {(error as any)?.response?.data?.errors?.[0]?.message ||
+              (error as any)?.response?.data?.error ||
+              "Something went wrong"}
+          </Alert>
+        )}
+
+        <Button
+          variant="contained"
+          fullWidth
+          sx={{ mt: 1, bgcolor: isPending ? "grey.500" : "primary.main" }}
+          onClick={handleLogin}
+        >
+          {isPending ? (
+            <>
+              <CircularProgress size={20} sx={{ color: "white", mr: 1 }} />
+              Signing you up...
+            </>
+          ) : (
+            "Sign Up"
+          )}
         </Button>
 
         <Divider flexItem />
