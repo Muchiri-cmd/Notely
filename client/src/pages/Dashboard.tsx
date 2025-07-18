@@ -1,7 +1,14 @@
-import { Navbar } from "../components";
+import { Navbar,NotesPane,SearchBar } from "../components";
 
 const Dashboard = () => {
-  return <Navbar />;
+  return (
+    <>
+      <Navbar />
+      <SearchBar />
+      <NotesPane />
+    </>
+    
+  );
 };
 
 export default Dashboard;
