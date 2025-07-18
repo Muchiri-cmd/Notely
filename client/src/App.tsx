@@ -1,5 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { LoginPage, RegisterPage, Dashboard, HomePage } from "./pages";
+import {
+  LoginPage,
+  RegisterPage,
+  Dashboard,
+  HomePage,
+  NotePage,
+} from "./pages";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
@@ -15,6 +21,15 @@ const App = () => {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/note/:id"
+          element={
+            <ProtectedRoute>
+              <NotePage />
             </ProtectedRoute>
           }
         />

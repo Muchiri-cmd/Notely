@@ -1,5 +1,6 @@
 import { Paper, Typography } from "@mui/material";
 import { Note } from "../types/note";
+import { Link } from "react-router-dom";
 
 const Note = (note: Note) => {
   const { title, synopsis, content } = note;
@@ -10,12 +11,15 @@ const Note = (note: Note) => {
         p: 3,
         boxShadow: 2,
         transition: "all 0.3s ease",
+        textDecoration: "none",
         "&:hover": {
           transform: "translateY(-4px)",
           cursor: "pointer",
         },
       }}
       elevation={2}
+      component={Link}
+      to={`/note/${note.id}`}
     >
       <Typography
         variant="h1"

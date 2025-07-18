@@ -17,3 +17,20 @@ export const useGetNotes = () => {
     },
   });
 };
+
+export const useGetNote = (id: string) => {
+  return useQuery({
+    queryKey: ["fetch-note", id],
+    queryFn: async () => {
+      const token = localStorage.getItem("token");
+
+      const res = await axiosInstance.get(`/entries/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return res.data;
+    },
+    enabled: !!id,
+  });
+};
