@@ -1,20 +1,22 @@
-import { Box } from "@mui/material"
-import Note from "./Note"
+import { Box } from "@mui/material";
+import Note from "./Note";
+// import { useGetNotes } from "../services/noteService"
 
 const NotesPane = () => {
+  // const {data,isPending,isSuccess,isError} = useGetNotes()
   return (
     <Box
-        sx = {{
-            // border:'2px solid red',
-            p:3,
-            display:'flex',
-            flexDirection:'row',
-            flexWrap:'wrap'
-        }}
+      sx={{
+        // border:'2px solid red',
+        p: 3,
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap",
+      }}
     >
-        <Note />
+      <Note />
     </Box>
-  )
-}
+  );
+};
 
-export default NotesPane
+export default NotesPane;

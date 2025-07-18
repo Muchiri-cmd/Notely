@@ -25,8 +25,7 @@ const Navbar = () => {
   };
   return (
     <>
-      <AppBar position="fixed"
-      >
+      <AppBar position="fixed">
         <Toolbar
           sx={{
             color: "black",
