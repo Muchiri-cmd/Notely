@@ -1,12 +1,13 @@
 import { Box } from "@mui/material";
-import { useState } from "react";
 import { TextField, InputAdornment, IconButton } from "@mui/material";
 import { FaSearch, FaTimes } from "react-icons/fa";
-import { CiGrid2H, CiGrid2V } from "react-icons/ci";
 
-const SearchBar = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+type Props = {
+  searchTerm: string;
+  setSearchTerm: (val: string) => void;
+};
 
+const SearchBar = ({ searchTerm, setSearchTerm }: Props) => {
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
@@ -58,10 +59,6 @@ const SearchBar = () => {
           ),
         }}
       ></TextField>
-      <Box>
-        {/* <CiGrid2H /> */}
-        <CiGrid2V size={30} />
-      </Box>
     </Box>
   );
 };

@@ -1,11 +1,19 @@
 import { Paper, Typography } from "@mui/material";
+import { Note } from "../types/note";
 
-const Note = () => {
+const Note = (note: Note) => {
+  const { title, synopsis, content } = note;
   return (
     <Paper
       sx={{
         maxWidth: "350px",
         p: 3,
+        boxShadow: 2,
+        transition: "all 0.3s ease",
+        "&:hover": {
+          transform: "translateY(-4px)",
+          cursor: "pointer",
+        },
       }}
       elevation={2}
     >
@@ -19,21 +27,28 @@ const Note = () => {
           letterSpacing: "-0.02em",
         }}
       >
-        Title
+        {title}
       </Typography>
-      <Typography variant="h6">Synopsis</Typography>
+      <Typography
+        variant="h6"
+        sx={{
+          fontSize: "18px",
+        }}
+      >
+        {synopsis}
+      </Typography>
       <Typography
         variant="body2"
         sx={{
           mt: 1,
+          display: "-webkit-box",
+          WebkitLineClamp: 5,
+          WebkitBoxOrient: "vertical",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
         }}
       >
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Placeat
-        voluptate voluptatem iure totam vitae, praesentium temporibus labore in!
-        Ea similique incidunt nesciunt magnam repellat, aliquam ad harum ipsam?
-        Perspiciatis a deserunt sapiente, pariatur vitae eveniet assumenda
-        velit? At a, dolor cumque reiciendis aliquam repudiandae asperiores
-        magnam. Corrupti quis eum eius?
+        {content}
       </Typography>
     </Paper>
   );

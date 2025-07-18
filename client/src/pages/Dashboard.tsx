@@ -1,10 +1,9 @@
-import { Navbar, NotesPane, SearchBar } from "../components";
+import { Navbar, NotesPane } from "../components";
 
 const Dashboard = () => {
   return (
     <>
       <Navbar />
-      <SearchBar />
       <NotesPane />
     </>
   );
