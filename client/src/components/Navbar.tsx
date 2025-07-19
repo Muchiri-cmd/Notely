@@ -13,10 +13,15 @@ import { FaNoteSticky } from "react-icons/fa6";
 import { FaPlus, FaTimes, FaPowerOff, FaUserEdit } from "react-icons/fa";
 import { Fab } from "@mui/material";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const location = useLocation();
+
+  const hideIconPaths = ["/create"];
+  const shouldHideIcon = hideIconPaths.includes(location.pathname);
+
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
   };
@@ -64,9 +69,10 @@ const Navbar = () => {
               color: "#1a202c",
               ml: 1,
               letterSpacing: 0.5,
+              textDecoration: "none",
             }}
-            // component={Link}
-            // to="/"
+            component={Link}
+            to="/"
           >
             Notely
           </Typography>
@@ -81,6 +87,8 @@ const Navbar = () => {
                   xs: "none",
                 },
               }}
+              component={Link}
+              to="/create"
             >
               <FaPlus size={24} />
             </IconButton>
@@ -108,17 +116,21 @@ const Navbar = () => {
             </Button>
           </Stack>
 
-          <Fab
-            color="primary"
-            sx={{
-              display: { xs: "flex", sm: "flex", md: "none" },
-              position: "fixed",
-              bottom: 40,
-              right: 15,
-            }}
-          >
-            <FaPlus />
-          </Fab>
+          {!shouldHideIcon && (
+            <Fab
+              color="primary"
+              sx={{
+                display: { xs: "flex", sm: "flex", md: "none" },
+                position: "fixed",
+                bottom: 20,
+                right: 15,
+              }}
+              component={Link}
+              to="/create"
+            >
+              <FaPlus />
+            </Fab>
+          )}
         </Toolbar>
       </AppBar>
 

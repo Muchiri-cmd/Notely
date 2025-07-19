@@ -17,16 +17,29 @@ import { Link } from "react-router-dom";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDeleteNote, useUpdateNote } from "../mutations/notes";
+import { useNavigate } from "react-router-dom";
 
 const NotePage = () => {
   const { id } = useParams();
+
   const { data: note, isPending, isError } = useGetNote(id!);
   const [isEditing, setIsEditing] = useState(false);
 
   const [title, setTitle] = useState("");
   const [synopsis, setSynopsis] = useState("");
   const [content, setContent] = useState("");
+
+  const { mutateAsync: deleteNote } = useDeleteNote();
+  const {
+    mutateAsync: updateNote,
+    isError: updateError,
+    isPending: updatePending,
+    error,
+  } = useUpdateNote();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (note) {
@@ -36,6 +49,22 @@ const NotePage = () => {
     }
   }, [note]);
 
+  const handleDelete = async (id: string) => {
+    await deleteNote(id);
+    navigate("/dashboard");
+  };
+
+  const handleUpdate = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    const note = {
+      title,
+      synopsis,
+      content,
+    };
+
+    await updateNote({ id: id!, data: note });
+    navigate("/dashboard");
+  };
   return (
     <>
       <Navbar />
@@ -75,6 +104,7 @@ const NotePage = () => {
             Back to Notes
           </Button>
         </Box>
+
         {isEditing ? (
           <>
             <TextField
@@ -99,14 +129,35 @@ const NotePage = () => {
               value={content}
               onChange={(e) => setContent(e.target.value)}
             />
+
+            <Box>
+              {updateError && (
+                <Alert severity="error" sx={{ width: "100%", mt: 1 }}>
+                  {(error as any)?.response?.data?.errors?.[0]?.message ||
+                    (error as any)?.response?.data?.error ||
+                    (error as any)?.message ||
+                    "Something went wrong"}
+                </Alert>
+              )}
+            </Box>
+
             <Button
               variant="contained"
               sx={{
                 mt: 2,
+                bgcolor: isPending ? "grey.500" : "primary.main",
               }}
               fullWidth
+              onClick={handleUpdate}
             >
-              Update
+              {updatePending ? (
+                <>
+                  <CircularProgress size={20} sx={{ color: "white", mr: 1 }} />
+                  Updating Note.
+                </>
+              ) : (
+                "Update Note"
+              )}
             </Button>
           </>
         ) : (
@@ -194,7 +245,7 @@ const NotePage = () => {
                         size="small"
                         sx={{ color: "error.main" }}
                         onClick={() => {
-                          // handleDelete(note.id)
+                          handleDelete(note.id);
                         }}
                       >
                         <MdDelete size={24} />

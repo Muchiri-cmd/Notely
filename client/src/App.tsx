@@ -7,6 +7,7 @@ import {
   NotePage,
 } from "./pages";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { NoteForm } from "./components";
 
 const App = () => {
   return (
@@ -30,6 +31,14 @@ const App = () => {
           element={
             <ProtectedRoute>
               <NotePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/create"
+          element={
+            <ProtectedRoute>
+              <NoteForm />
             </ProtectedRoute>
           }
         />
