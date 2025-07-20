@@ -30,3 +30,21 @@ export const useRegister = () => {
     },
   });
 };
+
+export const useUpdatePassword = () => {
+  return useMutation({
+    mutationKey: ["update-password"],
+    mutationFn: async (data: {
+      current_password: string;
+      password: string;
+    }) => {
+      const token = localStorage.getItem("token");
+      const res = await axiosInstance.post("/auth/password", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return res;
+    },
+  });
+};

@@ -74,7 +74,7 @@ const getSingleEntry = async (
       },
     });
     entry
-      ? res.status(500).json(entry)
+      ? res.status(200).json(entry)
       : res.status(404).json({
           message: "Entry not found",
         });

@@ -5,6 +5,7 @@ import {
   Dashboard,
   HomePage,
   NotePage,
+  UserProfile,
 } from "./pages";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { NoteForm } from "./components";
@@ -39,6 +40,15 @@ const App = () => {
           element={
             <ProtectedRoute>
               <NoteForm />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/user"
+          element={
+            <ProtectedRoute>
+              <UserProfile />
             </ProtectedRoute>
           }
         />

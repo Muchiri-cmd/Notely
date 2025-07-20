@@ -13,17 +13,19 @@ import cors from "cors";
 dotenv.config();
 
 const app = express();
-app.use(express.json());
+
 app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "http://192.168.1.120:5173",
-      "https://44aaec387b9d.ngrok-free.app",
+      "http://192.168.100.2:5173",
+      "http://192.168.100.2:3000",
     ],
     credentials: true,
   }),
 );
+
+app.use(express.json());
 
 app.get("/", (_req: Request, res: Response) => {
   res.send("<h1>Welcome to Notely API</h1>");

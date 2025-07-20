@@ -18,7 +18,7 @@ const authenticateToken = (
 ) => {
   const authHeader = req.headers.authorization;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+  if (!authHeader || !authHeader.startsWith("Bearer")) {
     res.status(401).json({ error: "Invalid Request, no token provided" });
     return;
   }

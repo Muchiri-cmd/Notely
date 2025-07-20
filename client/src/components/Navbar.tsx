@@ -12,14 +12,38 @@ import {
 import { FaNoteSticky } from "react-icons/fa6";
 import { FaPlus, FaTimes, FaPowerOff, FaUserEdit } from "react-icons/fa";
 import { Fab } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useGetUser } from "../queries/user";
 
 const Navbar = () => {
+  const { data } = useGetUser();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [userData, setUserData] = useState({
+    firstName: "",
+    lastName: "",
+    username: "",
+    email: "",
+    id: "",
+    avatar: "",
+  });
+
+  useEffect(() => {
+    if (data) {
+      setUserData({
+        firstName: data.firstName || "",
+        lastName: data.lastName || "",
+        username: data.username || "",
+        email: data.email || "",
+        id: data.id || "",
+        avatar: data.avatar || "",
+      });
+    }
+  }, [data]);
+
   const location = useLocation();
 
-  const hideIconPaths = ["/create"];
+  const hideIconPaths = ["/create", "/user"];
   const shouldHideIcon = hideIconPaths.includes(location.pathname);
 
   const toggleDrawer = () => {
@@ -36,6 +60,8 @@ const Navbar = () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
+
+  const initials = `${userData.firstName[0] ?? ""}${userData.lastName[0] ?? ""}`;
 
   return (
     <>
@@ -72,48 +98,47 @@ const Navbar = () => {
               textDecoration: "none",
             }}
             component={Link}
-            to="/"
+            to="/dashboard"
           >
             Notely
           </Typography>
 
-          <Stack direction="row" spacing={1}>
-            <IconButton
-              sx={{
-                color: "#1a202c",
-                display: {
-                  md: "block",
-                  sm: "none",
-                  xs: "none",
-                },
-              }}
+          <Stack direction="row" spacing={4} alignItems="center">
+            <Button
               component={Link}
               to="/create"
+              variant="contained"
+              sx={{ display: { xs: "none", md: "inline-flex" } }}
             >
-              <FaPlus size={24} />
-            </IconButton>
-
+              Create Note
+            </Button>
             <Button
-              color="inherit"
-              href="null"
-              sx={{
-                color: "#1a202c",
-                display: {
-                  md: "block",
-                  sm: "none",
-                  xs: "none",
-                },
-              }}
+              component={Link}
+              to="/dashboard"
+              variant="contained"
+              sx={{ display: { xs: "none", md: "inline-flex" } }}
             >
-              <Avatar />
+              All Notes
             </Button>
-            <Button color="inherit" onClick={toggleDrawer}>
+
+            <IconButton onClick={toggleDrawer} sx={{ p: 0 }}>
               <Avatar
-                sx={{ bgcolor: "#3182ce", color: "white", fontWeight: 600 }}
+                src={
+                  userData.avatar?.startsWith("http")
+                    ? userData.avatar
+                    : undefined
+                }
+                sx={{
+                  bgcolor: "#3182ce",
+                  color: "white",
+                  fontWeight: 600,
+                  width: 48,
+                  height: 48,
+                }}
               >
-                D
+                {!userData.avatar && initials}
               </Avatar>
-            </Button>
+            </IconButton>
           </Stack>
 
           {!shouldHideIcon && (
@@ -183,7 +208,7 @@ const Navbar = () => {
                   mb: 2,
                 }}
               >
-                D
+                {initials}
               </Avatar>
 
               <Typography
@@ -194,7 +219,7 @@ const Navbar = () => {
                   mb: 0.5,
                 }}
               >
-                Davis Muchiri
+                {userData.firstName}
               </Typography>
 
               <Typography
@@ -204,7 +229,7 @@ const Navbar = () => {
                   mb: 1,
                 }}
               >
-                davismuchiri21@gmail.com
+                {userData.email}
               </Typography>
 
               <Typography
@@ -218,7 +243,7 @@ const Navbar = () => {
                   fontFamily: "monospace",
                 }}
               >
-                User ID: 0917597057219
+                User ID: {userData.id}
               </Typography>
             </Box>
 
@@ -244,6 +269,8 @@ const Navbar = () => {
                     backgroundColor: "#2c5aa0",
                   },
                 }}
+                component={Link}
+                to="/user"
               >
                 Manage Account
               </Button>

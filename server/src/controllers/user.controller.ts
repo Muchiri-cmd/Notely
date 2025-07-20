@@ -35,4 +35,31 @@ const updateUser = async (
   }
 };
 
-export { updateUser };
+const getCurrentUser = async (req: AuthorizedRequest, res: Response) => {
+  const userId = (req as any).user?.id;
+
+  if (!userId)
+    return res.status(400).json({ message: "User ID not found in token" });
+
+  try {
+    const user = await client.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        userName: true,
+        email: true,
+        avatar: true,
+      },
+    });
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching user", error });
+  }
+};
+
+export { updateUser, getCurrentUser };
