@@ -18,8 +18,9 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import React, { useEffect, useState } from "react";
-import { useDeleteNote, useUpdateNote } from "../mutations/notes";
+import { useSoftDeleteNote, useUpdateNote } from "../mutations/notes";
 import { useNavigate } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
 
 const NotePage = () => {
   const { id } = useParams();
@@ -31,7 +32,8 @@ const NotePage = () => {
   const [synopsis, setSynopsis] = useState("");
   const [content, setContent] = useState("");
 
-  const { mutateAsync: deleteNote } = useDeleteNote();
+  const { mutateAsync: deleteNote } = useSoftDeleteNote();
+
   const {
     mutateAsync: updateNote,
     isError: updateError,
@@ -50,7 +52,12 @@ const NotePage = () => {
   }, [note]);
 
   const handleDelete = async (id: string) => {
-    await deleteNote(id);
+    const note = {
+      title,
+      synopsis,
+      content,
+    };
+    await deleteNote({ id, note });
     navigate("/dashboard");
   };
 
@@ -95,7 +102,6 @@ const NotePage = () => {
 
               transition: "all 0.2s ease-in-out",
               "&:hover": {
-                backgroundColor: "primary.light",
                 boxShadow: 2,
                 borderColor: "primary.main",
               },
@@ -169,7 +175,7 @@ const NotePage = () => {
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
-                  gap: 2,
+                  // border:'2px solid red',
                   bgcolor: "background.paper",
                   p: { xs: 2, sm: 3 },
                   borderRadius: 2,
@@ -192,8 +198,9 @@ const NotePage = () => {
                   <Typography
                     variant="subtitle1"
                     sx={{ color: "text.secondary", mb: 2 }}
+                    component="div"
                   >
-                    {note.synopsis}
+                    <ReactMarkdown>{note.synopsis}</ReactMarkdown>
                   </Typography>
 
                   <Divider
@@ -206,11 +213,12 @@ const NotePage = () => {
                     variant="body1"
                     sx={{
                       fontSize: "1.1rem",
-                      lineHeight: 1.8,
+                      lineHeight: 1,
                       whiteSpace: "pre-line",
                     }}
+                    component="div"
                   >
-                    {note.content}
+                    <ReactMarkdown>{note.content}</ReactMarkdown>
                   </Typography>
                 </Box>
 

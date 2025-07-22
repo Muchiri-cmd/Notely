@@ -104,6 +104,7 @@ const NoteForm = () => {
           <TextField
             label="Title"
             variant="outlined"
+            placeholder="Input note title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             fullWidth
@@ -113,6 +114,7 @@ const NoteForm = () => {
           <TextField
             label="Synopsis"
             variant="outlined"
+            placeholder="Enter a brief synopsis/description for your note"
             value={synopsis}
             onChange={(e) => setSynopsis(e.target.value)}
             fullWidth
@@ -123,6 +125,7 @@ const NoteForm = () => {
 
           <TextField
             label="Content"
+            placeholder="Enter your note content in markdown syntax"
             variant="outlined"
             value={content}
             onChange={(e) => setContent(e.target.value)}

@@ -79,10 +79,14 @@ const NotesPane = () => {
         }}
       >
         {filteredNotes?.length ? (
-          filteredNotes.map((note: any) => <Note key={note.id} {...note} />)
-        ) : (
+          filteredNotes.map((note: Note) => <Note key={note.id} {...note} />)
+        ) : searchTerm ? (
           <Alert severity="info" sx={{ gridColumn: "1 / -1" }}>
             No notes match your search.
+          </Alert>
+        ) : (
+          <Alert severity="info" sx={{ gridColumn: "1 / -1" }}>
+            You don’t have any notes yet.Add notes
           </Alert>
         )}
       </Box>

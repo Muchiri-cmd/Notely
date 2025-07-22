@@ -6,6 +6,7 @@ import {
   HomePage,
   NotePage,
   UserProfile,
+  Trash,
 } from "./pages";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { NoteForm } from "./components";
@@ -49,6 +50,15 @@ const App = () => {
           element={
             <ProtectedRoute>
               <UserProfile />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/trash"
+          element={
+            <ProtectedRoute>
+              <Trash />
             </ProtectedRoute>
           }
         />

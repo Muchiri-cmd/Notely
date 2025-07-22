@@ -1,6 +1,7 @@
 import { Paper, Typography } from "@mui/material";
-import { Note } from "../types/note";
+import type Note from "../types/note";
 import { Link } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
 
 const Note = (note: Note) => {
   const { title, synopsis, content } = note;
@@ -23,6 +24,7 @@ const Note = (note: Note) => {
     >
       <Typography
         variant="h1"
+        component="div"
         sx={{
           fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" },
           fontWeight: 800,
@@ -38,8 +40,9 @@ const Note = (note: Note) => {
         sx={{
           fontSize: "18px",
         }}
+        component="div"
       >
-        {synopsis}
+        <ReactMarkdown>{synopsis}</ReactMarkdown>
       </Typography>
       <Typography
         variant="body2"
@@ -51,8 +54,9 @@ const Note = (note: Note) => {
           overflow: "hidden",
           textOverflow: "ellipsis",
         }}
+        component="div"
       >
-        {content}
+        <ReactMarkdown>{content}</ReactMarkdown>
       </Typography>
     </Paper>
   );

@@ -10,12 +10,19 @@ import {
   Box,
 } from "@mui/material";
 import { FaNoteSticky } from "react-icons/fa6";
-import { FaPlus, FaTimes, FaPowerOff, FaUserEdit } from "react-icons/fa";
+import {
+  FaPlus,
+  FaTimes,
+  FaPowerOff,
+  FaUserEdit,
+  FaTrash,
+} from "react-icons/fa";
 import { Fab } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useGetUser } from "../queries/user";
 import { isLoggedIn } from "./ProtectedRoute";
+import { GrNotes } from "react-icons/gr";
 
 const Navbar = () => {
   const { data } = useGetUser();
@@ -44,8 +51,11 @@ const Navbar = () => {
 
   const location = useLocation();
 
-  const hideIconPaths = ["/create", "/user", "/"];
-  const shouldHideIcon = hideIconPaths.includes(location.pathname);
+  const hideIconPaths = ["/create", "/user", "/", "/note"];
+  const shouldHideIcon = hideIconPaths.some(
+    (path) =>
+      location.pathname === path || location.pathname.startsWith(`${path}/`),
+  );
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
@@ -99,13 +109,13 @@ const Navbar = () => {
               textDecoration: "none",
             }}
             component={Link}
-            to="/dashboard"
+            to="/"
           >
             Notely
           </Typography>
 
           {isLoggedIn() ? (
-            <Stack direction="row" spacing={4} alignItems="center">
+            <Stack direction="row" spacing={2} alignItems="center">
               <Button
                 component={Link}
                 to="/create"
@@ -122,6 +132,28 @@ const Navbar = () => {
               >
                 All Notes
               </Button>
+              <IconButton
+                sx={{
+                  display: { xs: "inline-flex", md: "none", color: "#3182ce" },
+                }}
+                component={Link}
+                to="/dashboard"
+              >
+                <GrNotes size={28} />
+              </IconButton>
+              <IconButton
+                sx={{
+                  color: "#3182ce",
+                  display: {
+                    xs: "none",
+                    md: "inline-flex",
+                  },
+                }}
+                component={Link}
+                to="/trash"
+              >
+                <FaTrash size={28} />
+              </IconButton>
 
               <IconButton onClick={toggleDrawer} sx={{ p: 0 }}>
                 <Avatar
@@ -295,6 +327,24 @@ const Navbar = () => {
                 to="/user"
               >
                 Manage Account
+              </Button>
+              <Button
+                variant="contained"
+                startIcon={<FaTrash />}
+                sx={{
+                  borderRadius: 2,
+                  py: 1.5,
+                  textTransform: "none",
+                  fontWeight: 600,
+                  backgroundColor: "#3182ce",
+                  "&:hover": {
+                    backgroundColor: "#2c5aa0",
+                  },
+                }}
+                component={Link}
+                to="/trash"
+              >
+                Trash
               </Button>
 
               <Button

@@ -34,3 +34,19 @@ export const useGetNote = (id: string) => {
     enabled: !!id,
   });
 };
+
+export const useGetDeletedNotes = () => {
+  return useQuery({
+    queryKey: ["fetch-deleted"],
+    queryFn: async () => {
+      const token = localStorage.getItem("token");
+
+      const res = await axiosInstance.get(`/entries/trash`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return res.data;
+    },
+  });
+};

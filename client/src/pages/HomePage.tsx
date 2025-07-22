@@ -162,9 +162,9 @@ const HomePage = () => {
                     },
                   }}
                   component={Link}
-                  to="/login"
+                  to="/dashboard"
                 >
-                  Login
+                  Write Notes
                 </Button>
               </Box>
             </Box>
@@ -355,6 +355,7 @@ const HomePage = () => {
               sx={{
                 color: "text.secondary",
                 maxWidth: "600px",
+                fontSize: "18px",
               }}
             >
               Powerful note-taking app with features designed to enhance
