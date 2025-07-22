@@ -15,6 +15,7 @@ import { Fab } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useGetUser } from "../queries/user";
+import { isLoggedIn } from "./ProtectedRoute";
 
 const Navbar = () => {
   const { data } = useGetUser();
@@ -43,7 +44,7 @@ const Navbar = () => {
 
   const location = useLocation();
 
-  const hideIconPaths = ["/create", "/user"];
+  const hideIconPaths = ["/create", "/user", "/"];
   const shouldHideIcon = hideIconPaths.includes(location.pathname);
 
   const toggleDrawer = () => {
@@ -103,43 +104,64 @@ const Navbar = () => {
             Notely
           </Typography>
 
-          <Stack direction="row" spacing={4} alignItems="center">
-            <Button
-              component={Link}
-              to="/create"
-              variant="contained"
-              sx={{ display: { xs: "none", md: "inline-flex" } }}
-            >
-              Create Note
-            </Button>
-            <Button
-              component={Link}
-              to="/dashboard"
-              variant="contained"
-              sx={{ display: { xs: "none", md: "inline-flex" } }}
-            >
-              All Notes
-            </Button>
-
-            <IconButton onClick={toggleDrawer} sx={{ p: 0 }}>
-              <Avatar
-                src={
-                  userData.avatar?.startsWith("http")
-                    ? userData.avatar
-                    : undefined
-                }
-                sx={{
-                  bgcolor: "#3182ce",
-                  color: "white",
-                  fontWeight: 600,
-                  width: 48,
-                  height: 48,
-                }}
+          {isLoggedIn() ? (
+            <Stack direction="row" spacing={4} alignItems="center">
+              <Button
+                component={Link}
+                to="/create"
+                variant="contained"
+                sx={{ display: { xs: "none", md: "inline-flex" } }}
               >
-                {!userData.avatar && initials}
-              </Avatar>
-            </IconButton>
-          </Stack>
+                Create Note
+              </Button>
+              <Button
+                component={Link}
+                to="/dashboard"
+                variant="contained"
+                sx={{ display: { xs: "none", md: "inline-flex" } }}
+              >
+                All Notes
+              </Button>
+
+              <IconButton onClick={toggleDrawer} sx={{ p: 0 }}>
+                <Avatar
+                  src={
+                    userData.avatar?.startsWith("http")
+                      ? userData.avatar
+                      : undefined
+                  }
+                  sx={{
+                    bgcolor: "#3182ce",
+                    color: "white",
+                    fontWeight: 600,
+                    width: 48,
+                    height: 48,
+                  }}
+                >
+                  {!userData.avatar && initials}
+                </Avatar>
+              </IconButton>
+            </Stack>
+          ) : (
+            <Stack direction="row" spacing={4} alignItems="center">
+              <Button
+                component={Link}
+                to="/login"
+                variant="contained"
+                sx={{ display: { xs: "none", md: "inline-flex" } }}
+              >
+                Login
+              </Button>
+              <Button
+                component={Link}
+                to="/register"
+                variant="contained"
+                sx={{ display: { xs: "none", md: "inline-flex" } }}
+              >
+                Register
+              </Button>
+            </Stack>
+          )}
 
           {!shouldHideIcon && (
             <Fab

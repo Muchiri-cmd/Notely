@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 import { Navigate } from "react-router-dom";
 
-const isLoggedIn = () => {
+export const isLoggedIn = () => {
   const isLoggedIn = !!localStorage.getItem("token");
   // console.log(isLoggedIn);
   return isLoggedIn;
