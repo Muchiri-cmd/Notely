@@ -1,12 +1,38 @@
 import { Paper, Typography, Button, Box, IconButton } from "@mui/material";
-import type Note from "../types/note";
+import type NoteType from "../types/note";
 import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { TiPin } from "react-icons/ti";
 import { FaBookmark } from "react-icons/fa";
+import { useUpdateNote } from "../mutations/notes";
+import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
-const Note = (note: Note) => {
+const Note = (note: NoteType) => {
+  const queryClient = useQueryClient(); 
   const { title, synopsis, content } = note;
+  const [bookMarked, setBookMarked] = useState(note.isBookMarked)
+  const [pinned,setPinned] = useState(note.isPinned)
+  
+
+  const { mutateAsync: updateNote } = useUpdateNote();
+
+  const handleUpdate = async (id:string,type: "pin" | "bookmark") => {
+    const updatedNote = {
+      title: note.title,
+      synopsis: note.synopsis,
+      content: note.content,
+      isPinned: type === "pin" ? !pinned : pinned,
+      isBookMarked: type === "bookmark" ? !bookMarked : bookMarked,
+    };
+  
+    if (type === "pin") setPinned(!pinned);
+    if (type === "bookmark") setBookMarked(!bookMarked);
+  
+    await updateNote({ id: id!, data: updatedNote });
+    queryClient.invalidateQueries(["fetch-notes"]);
+  };
+
   return (
     <Paper
       sx={{
@@ -81,11 +107,11 @@ const Note = (note: Note) => {
             // border:'2px solid red'
           }}
         >
-          <IconButton>
-            <TiPin />
+          <IconButton onClick={() => handleUpdate(note.id, "pin")}>
+            <TiPin color={pinned ? "#1976d2" : "inherit"} />
           </IconButton>
-          <IconButton>
-            <FaBookmark size={16} />
+          <IconButton onClick={() => handleUpdate(note.id, "bookmark")}>
+            <FaBookmark color={bookMarked ? "#1976d2" : "inherit"} size={16} />
           </IconButton>
         </Box>
 

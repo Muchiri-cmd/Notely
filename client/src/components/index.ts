@@ -4,5 +4,6 @@ import SearchBar from "./SearchBar";
 import ProtectedRoute from "./ProtectedRoute";
 import NoteForm from "./NoteForm";
 import TrashNote from "./TrashNote";
+import Note from "./Note";
 
-export { Navbar, NotesPane, SearchBar, ProtectedRoute, NoteForm, TrashNote };
+export { Navbar, NotesPane, SearchBar, ProtectedRoute, NoteForm, TrashNote,Note };

@@ -101,6 +101,8 @@ export const useUpdateNote = () => {
         title: string;
         synopsis: string;
         content: string;
+        isPinned: boolean;
+        isBookMarked:boolean;
       };
     }) => {
       const token = localStorage.getItem("token");

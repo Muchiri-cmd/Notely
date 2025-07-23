@@ -91,7 +91,7 @@ const updateEntry = async (
   try {
     const { id } = req.params;
     const validatedRequest = noteSchema.parse(req.body);
-    const { title, synopsis, content } = validatedRequest;
+    const { title, synopsis, content,isPinned,isBookMarked } = validatedRequest;
 
     const updatedEntry = await client.entry.update({
       where: { id },
@@ -99,6 +99,8 @@ const updateEntry = async (
         title,
         synopsis,
         content,
+        isPinned,
+        isBookMarked,
       },
     });
 
@@ -168,9 +170,12 @@ const getDeletedEntries = async (
   next: NextFunction,
 ) => {
   try {
+    const id = req?.user?.id;
+    // console.log('id',id)
     const deletedEntries = await client.entry.findMany({
       where: {
         isDeleted: true,
+        writerId: id,
       },
     });
 

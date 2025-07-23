@@ -67,6 +67,8 @@ const NotePage = () => {
       title,
       synopsis,
       content,
+      isPinned:false,
+      isBookMarked:false,
     };
 
     await updateNote({ id: id!, data: note });

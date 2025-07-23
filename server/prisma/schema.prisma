@@ -39,6 +39,8 @@ model Entry {
   isDeleted Boolean @default(false)
   dateCreated DateTime @default(now())
   lastUpdated DateTime @updatedAt
+  isBookMarked Boolean @default(false)
+  isPinned Boolean @default(false)
 
   writer User @relation(fields:[writerId], references: [id])
   writerId String

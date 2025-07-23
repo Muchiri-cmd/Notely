@@ -1,9 +1,10 @@
 import Note from "./Note";
 import { useGetNotes } from "../queries/notes";
-import { CircularProgress, Alert, Box, IconButton } from "@mui/material";
+import { CircularProgress, Alert, Box, IconButton,Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import { CiGrid2H, CiGrid2V } from "react-icons/ci";
 import SearchBar from "./SearchBar";
+import type NoteType from "../types/note";
 
 const NotesPane = () => {
   const { data, isPending, isError } = useGetNotes();
@@ -40,6 +41,9 @@ const NotesPane = () => {
       </Alert>
     );
   }
+
+  const pinnedNotes = filteredNotes?.filter((note: NoteType) => note.isPinned);
+  const otherNotes = filteredNotes?.filter((note: NoteType) => !note.isPinned);
 
   return (
     <Box>
@@ -78,21 +82,53 @@ const NotesPane = () => {
             xs: columns === 1 ? "1fr" : "repeat(2, 1fr)",
             sm: "repeat(auto-fill, minmax(300px, 1fr))",
           },
-          // border:'2px solid red',
         }}
       >
-        {filteredNotes?.length ? (
-          filteredNotes.map((note: Note) => <Note key={note.id} {...note} />)
+    {filteredNotes?.length ? (
+      <>
+        {pinnedNotes.length > 0 && (
+          <>
+            <Typography
+              variant="h6"
+              sx={{ gridColumn: "1 / -1", mb: 1, fontWeight: 600 }}
+            >
+              Pinned
+            </Typography>
+            {pinnedNotes.map((note: NoteType) => (
+              <Note key={note.id} {...note} />
+            ))}
+          </>
+        )}
+
+        {otherNotes.length > 0 && (
+        <>
+          {pinnedNotes.length > 0 && otherNotes.length > 0 && (
+            <>
+              <Typography
+                variant="h6"
+                sx={{ gridColumn: "1 / -1", mt: 2, mb: 1, fontWeight: 600 }}
+              >
+                Others
+              </Typography>
+          </>
+          )} 
+           {otherNotes.map((note: NoteType) => (
+            <Note key={note.id} {...note} />
+          ))}     
+        </>
+    )}
+          </>
         ) : searchTerm ? (
           <Alert severity="info" sx={{ gridColumn: "1 / -1" }}>
             No notes match your search.
           </Alert>
         ) : (
           <Alert severity="info" sx={{ gridColumn: "1 / -1" }}>
-            You don’t have any notes yet.Add notes
+            You don’t have any notes yet. Add notes.
           </Alert>
         )}
       </Box>
+
     </Box>
   );
 };

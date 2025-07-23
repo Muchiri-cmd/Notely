@@ -4,8 +4,13 @@ import { MdDelete, MdRestorePage } from "react-icons/md";
 import type Note from "../types/note";
 import { useDeleteNote, useRestoreNote } from "../mutations/notes";
 import { useNavigate } from "react-router-dom";
+import type React from "react";
 
-const TrashNote = (note: Note) => {
+type TrashNoteProps = Note & {
+  setNotes: React.Dispatch<React.SetStateAction<Note[]>>;
+};
+
+const TrashNote = ({ setNotes, ...note }: TrashNoteProps) => {
   const { mutateAsync: deleteNote } = useDeleteNote();
   const { mutateAsync: restoreNote } = useRestoreNote();
 
@@ -13,7 +18,7 @@ const TrashNote = (note: Note) => {
 
   const handleDelete = async (id: string) => {
     await deleteNote(id);
-    navigate("/dashboard");
+    setNotes((prev) => prev.filter((note) => note.id !== id ))
   };
 
   const handleRestore = async (id: string) => {
