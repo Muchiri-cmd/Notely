@@ -10,14 +10,16 @@ const NotesPane = () => {
   const [columns, setColumns] = useState<1 | 2>(1);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredNotes = data?.filter((note: any) => {
-    const query = searchTerm.toLowerCase();
-    return (
-      note.title.toLowerCase().includes(query) ||
-      note.synopsis?.toLowerCase().includes(query) ||
-      note.content?.toLowerCase().includes(query)
-    );
-  });
+  const filteredNotes = data
+    ?.filter((note: any) => {
+      const query = searchTerm.toLowerCase();
+      return (
+        note.title.toLowerCase().includes(query) ||
+        note.synopsis?.toLowerCase().includes(query) ||
+        note.content?.toLowerCase().includes(query)
+      );
+    })
+    .reverse();
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -70,12 +72,13 @@ const NotesPane = () => {
         sx={{
           p: 2,
           display: "grid",
-          gap: 1.2,
+          gap: 1,
           justifyContent: "center",
           gridTemplateColumns: {
             xs: columns === 1 ? "1fr" : "repeat(2, 1fr)",
             sm: "repeat(auto-fill, minmax(300px, 1fr))",
           },
+          // border:'2px solid red',
         }}
       >
         {filteredNotes?.length ? (

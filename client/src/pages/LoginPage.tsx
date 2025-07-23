@@ -24,7 +24,7 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
 
-  const handleLogin = async (e: React.MouseEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     const isEmail = userNameOrEmail.includes("@");
 
@@ -46,116 +46,119 @@ const LoginPage = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        p: 2,
+        p: 1,
       }}
     >
-      <Paper
-        elevation={3}
-        sx={{
-          width: 500,
-          px: 4,
-          py: 5,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 3,
-        }}
-      >
-        <FaNoteSticky size={48} style={{ color: "#3182ce" }} />
-        <Box textAlign="center">
-          <Typography variant="h6" fontWeight={600}>
-            Welcome Back
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Sign in to access your notes
-          </Typography>
-        </Box>
-
-        <TextField
-          fullWidth
-          label="Email or Username"
-          type="text"
-          name="email"
-          autoComplete="email"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <FaRegUser />
-              </InputAdornment>
-            ),
-          }}
-          value={userNameOrEmail}
-          onChange={(e) => setUserNameorEmail(e.target.value)}
-          required
-        />
-
-        <TextField
-          fullWidth
-          label="Password"
-          type="password"
-          name="new-password"
-          autoComplete="new-password"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <TbLockPassword />
-              </InputAdornment>
-            ),
-          }}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-
-        {isError && (
-          <Alert severity="error" sx={{ width: "100%", mt: 1 }}>
-            {(error as any)?.response?.data?.errors?.[0]?.message ||
-              (error as any)?.response?.data?.error ||
-              (error as any)?.message ||
-              "Something went wrong"}
-          </Alert>
-        )}
-
-        <Button
-          variant="contained"
-          fullWidth
-          sx={{ mt: 1, bgcolor: isPending ? "grey.500" : "primary.main" }}
-          onClick={handleLogin}
-        >
-          {isPending ? (
-            <>
-              <CircularProgress size={20} sx={{ color: "white", mr: 1 }} />
-              Signing you in...
-            </>
-          ) : (
-            "Sign In"
-          )}
-        </Button>
-
-        <Divider flexItem />
-
-        <Box
-          textAlign="center"
+      <form action="" onSubmit={handleLogin}>
+        <Paper
+          elevation={3}
           sx={{
+            width: 500,
+            px: 4,
+            py: 2,
             display: "flex",
-            gap: 1,
+            flexDirection: "column",
             alignItems: "center",
+            gap: 2,
           }}
         >
-          <Typography variant="body2" color="text.secondary">
-            Don’t have an account?
-          </Typography>
-          <Button variant="text" size="small" component={Link} to="/register">
-            Sign Up
-          </Button>
-        </Box>
+          <FaNoteSticky size={48} style={{ color: "#3182ce" }} />
+          <Box textAlign="center">
+            <Typography variant="h6" fontWeight={600}>
+              Welcome Back
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Sign in to access your notes
+            </Typography>
+          </Box>
 
-        <Box textAlign="end">
-          <Button variant="text" size="small">
-            Forgot Password
+          <TextField
+            fullWidth
+            label="Email or Username"
+            type="text"
+            name="email"
+            autoComplete="email"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <FaRegUser />
+                </InputAdornment>
+              ),
+            }}
+            value={userNameOrEmail}
+            onChange={(e) => setUserNameorEmail(e.target.value)}
+            required
+          />
+
+          <TextField
+            fullWidth
+            label="Password"
+            type="password"
+            name="new-password"
+            autoComplete="new-password"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <TbLockPassword />
+                </InputAdornment>
+              ),
+            }}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+
+          {isError && (
+            <Alert severity="error" sx={{ width: "100%", mt: 0.5 }}>
+              {(error as any)?.response?.data?.errors?.[0]?.message ||
+                (error as any)?.response?.data?.error ||
+                (error as any)?.message ||
+                "Something went wrong"}
+            </Alert>
+          )}
+
+          <Button
+            variant="contained"
+            fullWidth
+            sx={{ mt: 1, bgcolor: isPending ? "grey.500" : "primary.main" }}
+            // onClick={handleLogin}
+            type="submit"
+          >
+            {isPending ? (
+              <>
+                <CircularProgress size={20} sx={{ color: "white", mr: 1 }} />
+                Signing you in...
+              </>
+            ) : (
+              "Sign In"
+            )}
           </Button>
-        </Box>
-      </Paper>
+
+          <Divider flexItem />
+
+          <Box
+            textAlign="center"
+            sx={{
+              display: "flex",
+              gap: 1,
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="body2" color="text.secondary">
+              Don’t have an account?
+            </Typography>
+            <Button variant="text" size="small" component={Link} to="/register">
+              Sign Up
+            </Button>
+          </Box>
+
+          <Box textAlign="end">
+            <Button variant="text" size="small">
+              Forgot Password
+            </Button>
+          </Box>
+        </Paper>
+      </form>
     </Box>
   );
 };

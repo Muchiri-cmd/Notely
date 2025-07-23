@@ -186,7 +186,7 @@ const NotePage = () => {
                   <Typography
                     variant="h1"
                     sx={{
-                      fontSize: { xs: "2rem", sm: "2.5rem" },
+                      fontSize: { xs: "1.5rem", sm: "2rem" },
                       fontWeight: 700,
                       mb: 1,
                       lineHeight: 1.2,
@@ -212,7 +212,7 @@ const NotePage = () => {
                   <Typography
                     variant="body1"
                     sx={{
-                      fontSize: "1.1rem",
+                      fontSize: "1rem",
                       lineHeight: 1,
                       whiteSpace: "pre-line",
                     }}
@@ -238,7 +238,7 @@ const NotePage = () => {
                     <Tooltip title="Edit Note">
                       <IconButton
                         size="small"
-                        sx={{ color: "text.secondary", mr: 1 }}
+                        sx={{ color: "#3182ce", mr: 1 }}
                         onClick={() => {
                           // handleEdit(note.id)
                           setIsEditing(true);

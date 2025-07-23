@@ -30,7 +30,7 @@ const Navbar = () => {
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
-    username: "",
+    userName: "",
     email: "",
     id: "",
     avatar: "",
@@ -41,7 +41,7 @@ const Navbar = () => {
       setUserData({
         firstName: data.firstName || "",
         lastName: data.lastName || "",
-        username: data.username || "",
+        userName: data.userName || "",
         email: data.email || "",
         id: data.id || "",
         avatar: data.avatar || "",
@@ -104,9 +104,12 @@ const Navbar = () => {
               textTransform: "uppercase",
               fontWeight: 700,
               color: "#1a202c",
-              ml: 1,
-              letterSpacing: 0.5,
+              letterSpacing: 0.3,
               textDecoration: "none",
+              fontSize: {
+                xs: "17px",
+                md: "20px",
+              },
             }}
             component={Link}
             to="/"
@@ -118,44 +121,63 @@ const Navbar = () => {
             <Stack direction="row" spacing={2} alignItems="center">
               <Button
                 component={Link}
-                to="/create"
+                to="/dashboard"
                 variant="contained"
-                sx={{ display: { xs: "none", md: "inline-flex" } }}
+                sx={{
+                  display: { xs: "none", md: "inline-flex" },
+                  textTransform: "none",
+                  fontWeight: 600,
+                }}
               >
-                Create Note
+                My Notes
               </Button>
               <Button
                 component={Link}
-                to="/dashboard"
+                to="/create"
                 variant="contained"
-                sx={{ display: { xs: "none", md: "inline-flex" } }}
+                sx={{
+                  display: { xs: "none", md: "inline-flex" },
+                  textTransform: "none",
+                  fontWeight: 600,
+                }}
               >
-                All Notes
+                Create Note
               </Button>
               <IconButton
                 sx={{
-                  display: { xs: "inline-flex", md: "none", color: "#3182ce" },
+                  display: { xs: "inline-flex", md: "none" },
+                  color: "#3182ce",
+                  bgcolor: "#e6f0fa",
+                  "&:hover": { bgcolor: "#d0e4f7" },
                 }}
                 component={Link}
                 to="/dashboard"
               >
-                <GrNotes size={28} />
+                <GrNotes size={24} />
               </IconButton>
               <IconButton
                 sx={{
+                  display: { xs: "none", md: "inline-flex" },
                   color: "#3182ce",
-                  display: {
-                    xs: "none",
-                    md: "inline-flex",
-                  },
+                  bgcolor: "#e6f0fa",
+                  "&:hover": { bgcolor: "#d0e4f7" },
                 }}
                 component={Link}
                 to="/trash"
               >
-                <FaTrash size={28} />
+                <FaTrash size={22} />
               </IconButton>
 
-              <IconButton onClick={toggleDrawer} sx={{ p: 0 }}>
+              <Box sx={{ ml: 2, textAlign: "right" }}>
+                <Typography variant="caption" sx={{ color: "text.secondary" }}>
+                  Welcome,
+                </Typography>
+                <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                  {userData.firstName}
+                </Typography>
+              </Box>
+
+              <IconButton onClick={toggleDrawer} sx={{ p: 0, ml: 1 }}>
                 <Avatar
                   src={
                     userData.avatar?.startsWith("http")
@@ -175,12 +197,27 @@ const Navbar = () => {
               </IconButton>
             </Stack>
           ) : (
-            <Stack direction="row" spacing={4} alignItems="center">
+            <Stack
+              direction="row"
+              spacing={3}
+              alignItems="center"
+              sx={{ py: 1.5, px: 2 }}
+            >
               <Button
                 component={Link}
                 to="/login"
-                variant="contained"
-                sx={{ display: { xs: "none", md: "inline-flex" } }}
+                variant="outlined"
+                sx={{
+                  display: { xs: "none", md: "inline-flex" },
+                  color: "#3182ce",
+                  borderColor: "#3182ce",
+                  textTransform: "none",
+                  fontWeight: 500,
+                  "&:hover": {
+                    bgcolor: "#e6f0fa",
+                    borderColor: "#276bb0",
+                  },
+                }}
               >
                 Login
               </Button>
@@ -188,7 +225,13 @@ const Navbar = () => {
                 component={Link}
                 to="/register"
                 variant="contained"
-                sx={{ display: { xs: "none", md: "inline-flex" } }}
+                sx={{
+                  display: { xs: "none", md: "inline-flex" },
+                  bgcolor: "#3182ce",
+                  "&:hover": { bgcolor: "#276bb0" },
+                  textTransform: "none",
+                  fontWeight: 600,
+                }}
               >
                 Register
               </Button>
@@ -199,7 +242,7 @@ const Navbar = () => {
             <Fab
               color="primary"
               sx={{
-                display: { xs: "flex", sm: "flex", md: "none" },
+                display: { xs: "flex", sm: "flex" },
                 position: "fixed",
                 bottom: 20,
                 right: 15,
@@ -314,13 +357,13 @@ const Navbar = () => {
                 variant="contained"
                 startIcon={<FaUserEdit />}
                 sx={{
-                  borderRadius: 2,
+                  borderRadius: 3,
                   py: 1.5,
                   textTransform: "none",
                   fontWeight: 600,
-                  backgroundColor: "#3182ce",
-                  "&:hover": {
-                    backgroundColor: "#2c5aa0",
+                  fontSize: {
+                    xs: "12px",
+                    md: "14px",
                   },
                 }}
                 component={Link}
@@ -332,13 +375,13 @@ const Navbar = () => {
                 variant="contained"
                 startIcon={<FaTrash />}
                 sx={{
-                  borderRadius: 2,
+                  borderRadius: 3,
                   py: 1.5,
                   textTransform: "none",
                   fontWeight: 600,
-                  backgroundColor: "#3182ce",
-                  "&:hover": {
-                    backgroundColor: "#2c5aa0",
+                  fontSize: {
+                    xs: "12px",
+                    md: "14px",
                   },
                 }}
                 component={Link}
@@ -352,12 +395,13 @@ const Navbar = () => {
                 color="error"
                 startIcon={<FaPowerOff />}
                 sx={{
-                  borderRadius: 2,
+                  borderRadius: 3,
                   py: 1.5,
                   textTransform: "none",
                   fontWeight: 500,
-                  "&:hover": {
-                    backgroundColor: "#c53030",
+                  fontSize: {
+                    xs: "12px",
+                    md: "14px",
                   },
                 }}
                 onClick={handleLogout}

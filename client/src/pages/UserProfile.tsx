@@ -38,6 +38,7 @@ const UserProfile = () => {
 
   const [previewUrl, setPreviewUrl] = useState("");
   const [profilePic, setProfilePic] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
 
   const [userData, setUserData] = useState({
     firstName: "",
@@ -77,6 +78,8 @@ const UserProfile = () => {
     formData.append("file", file);
     formData.append("upload_preset", "notely_preset");
 
+    setIsUploading(true);
+
     try {
       const res = await fetch(import.meta.env.VITE_CLOUDINARY_URL, {
         method: "POST",
@@ -93,6 +96,8 @@ const UserProfile = () => {
       setPreviewUrl(avatarUrl);
     } catch (error: any) {
       console.error("Upload failed:", error);
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -104,9 +109,12 @@ const UserProfile = () => {
 
     if (profilePic) {
       updateData.avatar = profilePic;
+    } else {
+      updateData.avatar = "";
     }
 
     await updateUser(updateData);
+    window.location.reload();
   };
 
   const handlePasswordUpdate = (e: React.MouseEvent) => {
@@ -164,7 +172,7 @@ const UserProfile = () => {
 
               <Stack direction="row" spacing={2} alignItems="center">
                 <Avatar
-                  src={previewUrl ?? undefined}
+                  src={previewUrl || undefined}
                   sx={{
                     width: 64,
                     height: 64,
@@ -172,17 +180,40 @@ const UserProfile = () => {
                     fontSize: 24,
                   }}
                 >
-                  {previewUrl ? "" : initials}
+                  {!previewUrl && initials}
                 </Avatar>
-                <Button variant="outlined" component="label">
-                  Upload Photo
-                  <input
-                    hidden
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                  />
-                </Button>
+
+                <Stack direction="row" spacing={1}>
+                  <Button
+                    variant="outlined"
+                    component="label"
+                    disabled={isUploading}
+                    startIcon={
+                      isUploading ? <CircularProgress size={16} /> : undefined
+                    }
+                  >
+                    {isUploading ? "Uploading..." : "Upload Photo"}
+                    <input
+                      hidden
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                    />
+                  </Button>
+
+                  {previewUrl && (
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      onClick={() => {
+                        setPreviewUrl("");
+                        setProfilePic("");
+                      }}
+                    >
+                      Remove Photo
+                    </Button>
+                  )}
+                </Stack>
               </Stack>
 
               <TextField

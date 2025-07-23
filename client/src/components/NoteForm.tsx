@@ -58,7 +58,6 @@ const NoteForm = () => {
 
             transition: "all 0.2s ease-in-out",
             "&:hover": {
-              backgroundColor: "primary.light",
               boxShadow: 2,
               borderColor: "primary.main",
             },
@@ -72,7 +71,7 @@ const NoteForm = () => {
         elevation={3}
         sx={{
           px: { xs: 3, sm: 5 },
-          py: { xs: 3, sm: 5 },
+          py: 3,
           mt: 1,
           maxWidth: "md",
           mx: "auto",
@@ -83,14 +82,14 @@ const NoteForm = () => {
         <Typography
           variant="h5"
           fontWeight={700}
-          mb={2}
+          mb={1}
           sx={{ textAlign: "center", color: "text.primary" }}
         >
           Create a New Note
         </Typography>
         <Typography
           variant="subtitle2"
-          mb={4}
+          mb={3}
           sx={{ textAlign: "center", color: "text.secondary" }}
         >
           Capture your thoughts, drafts, or plans
@@ -99,7 +98,7 @@ const NoteForm = () => {
         <Box
           component="form"
           onSubmit={handleSubmit}
-          sx={{ display: "flex", flexDirection: "column", gap: 3 }}
+          sx={{ display: "flex", flexDirection: "column", gap: 2 }}
         >
           <TextField
             label="Title"
@@ -153,7 +152,7 @@ const NoteForm = () => {
               sx={{
                 bgcolor: isPending ? "grey.500" : "primary.main",
                 px: 4,
-                py: 1.4,
+                py: 1.2,
                 borderRadius: 2,
                 fontWeight: 600,
                 textTransform: "none",
