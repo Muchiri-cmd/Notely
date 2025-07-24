@@ -4,17 +4,17 @@ import { Alert, CircularProgress } from "@mui/material";
 import { useGetDeletedNotes } from "../queries/notes";
 import { TrashNote } from "../components";
 import type NoteType from "../types/note";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 
 const Trash = () => {
   const { data: notes = [], isPending, isSuccess } = useGetDeletedNotes();
   const [localNotes, setNotes] = useState<NoteType[]>([]);
 
   useEffect(() => {
-    if (isSuccess){
-      setNotes(notes)
+    if (isSuccess) {
+      setNotes(notes);
     }
-  },[notes,isSuccess])
+  }, [notes, isSuccess]);
 
   return (
     <>
@@ -57,7 +57,7 @@ const Trash = () => {
               }}
             >
               {localNotes.map((note: NoteType) => (
-                <TrashNote key={note.id} {...note} setNotes={setNotes}/>
+                <TrashNote key={note.id} {...note} setNotes={setNotes} />
               ))}
             </Box>
           </>

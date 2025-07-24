@@ -10,7 +10,9 @@ import {
   Tooltip,
   IconButton,
   TextField,
+  Modal,
 } from "@mui/material";
+import { IoIosCloseCircle } from "react-icons/io";
 import Navbar from "../components/Navbar";
 import { useGetNote } from "../queries/notes";
 import { Link } from "react-router-dom";
@@ -18,7 +20,11 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import React, { useEffect, useState } from "react";
-import { useSoftDeleteNote, useUpdateNote } from "../mutations/notes";
+import {
+  useGetSummary,
+  useSoftDeleteNote,
+  useUpdateNote,
+} from "../mutations/notes";
 import { useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 
@@ -32,6 +38,9 @@ const NotePage = () => {
   const [synopsis, setSynopsis] = useState("");
   const [content, setContent] = useState("");
 
+  const [open, setOpen] = useState(false);
+  const [summaryText, setSummaryText] = useState("");
+
   const { mutateAsync: deleteNote } = useSoftDeleteNote();
 
   const {
@@ -40,6 +49,8 @@ const NotePage = () => {
     isPending: updatePending,
     error,
   } = useUpdateNote();
+
+  const { mutateAsync: summarize, isPending: PendingSummary } = useGetSummary();
 
   const navigate = useNavigate();
 
@@ -67,12 +78,24 @@ const NotePage = () => {
       title,
       synopsis,
       content,
-      isPinned:false,
-      isBookMarked:false,
+      isPinned: false,
+      isBookMarked: false,
     };
 
     await updateNote({ id: id!, data: note });
     navigate("/dashboard");
+  };
+
+  const handleSummarize = async (e: React.MouseEvent) => {
+    // console.log('summarizing')
+    e.preventDefault();
+    try {
+      const response = await summarize({ content });
+      setSummaryText(response.summary);
+      setOpen(true);
+    } catch (error) {
+      console.error("Failed to summarize", error);
+    }
   };
   return (
     <>
@@ -211,6 +234,46 @@ const NotePage = () => {
                     }}
                   ></Divider>
 
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                    }}
+                  >
+                    <Button
+                      variant="outlined"
+                      sx={{
+                        color: "#1a4d2e",
+                        borderColor: "#1a4d2e",
+                        backgroundColor: "#e6f4ea",
+                        borderRadius: "8px 24px 8px 24px",
+                        fontWeight: 600,
+                        py: 1,
+                        mb: 2,
+                        textTransform: "none",
+                        "&:hover": {
+                          backgroundColor: "#c3ebd4",
+                        },
+                      }}
+                      onClick={handleSummarize}
+                    >
+                      {PendingSummary ? (
+                        <>
+                          <CircularProgress size={18} />
+                          <Typography
+                            sx={{
+                              ml: 1,
+                            }}
+                          >
+                            Summarizing...
+                          </Typography>
+                        </>
+                      ) : (
+                        "Summarize"
+                      )}
+                    </Button>
+                  </Box>
+
                   <Typography
                     variant="body1"
                     sx={{
@@ -267,6 +330,39 @@ const NotePage = () => {
             )}
           </>
         )}
+        <Modal open={open} onClose={() => setOpen(false)}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: 400,
+              bgcolor: "background.paper",
+              boxShadow: 24,
+              borderRadius: 2,
+              p: 4,
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Typography variant="h6" fontWeight="bold">
+                Summary
+              </Typography>
+              <IconButton onClick={() => setOpen(false)}>
+                <IoIosCloseCircle color="#d32f2f" />
+              </IconButton>
+            </Box>
+            <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
+              {summaryText}
+            </Typography>
+          </Box>
+        </Modal>
       </Container>
     </>
   );

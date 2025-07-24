@@ -9,15 +9,14 @@ import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
 const Note = (note: NoteType) => {
-  const queryClient = useQueryClient(); 
+  const queryClient = useQueryClient();
   const { title, synopsis, content } = note;
-  const [bookMarked, setBookMarked] = useState(note.isBookMarked)
-  const [pinned,setPinned] = useState(note.isPinned)
-  
+  const [bookMarked, setBookMarked] = useState(note.isBookMarked);
+  const [pinned, setPinned] = useState(note.isPinned);
 
   const { mutateAsync: updateNote } = useUpdateNote();
 
-  const handleUpdate = async (id:string,type: "pin" | "bookmark") => {
+  const handleUpdate = async (id: string, type: "pin" | "bookmark") => {
     const updatedNote = {
       title: note.title,
       synopsis: note.synopsis,
@@ -25,10 +24,10 @@ const Note = (note: NoteType) => {
       isPinned: type === "pin" ? !pinned : pinned,
       isBookMarked: type === "bookmark" ? !bookMarked : bookMarked,
     };
-  
+
     if (type === "pin") setPinned(!pinned);
     if (type === "bookmark") setBookMarked(!bookMarked);
-  
+
     await updateNote({ id: id!, data: updatedNote });
     queryClient.invalidateQueries(["fetch-notes"]);
   };

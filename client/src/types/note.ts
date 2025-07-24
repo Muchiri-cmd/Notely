@@ -3,6 +3,6 @@ export default interface NoteType {
   title: string;
   synopsis: string;
   content: string;
-  isPinned:boolean;
-  isBookMarked:boolean;
+  isPinned: boolean;
+  isBookMarked: boolean;
 }

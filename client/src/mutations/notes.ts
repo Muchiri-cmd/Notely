@@ -89,6 +89,26 @@ export const useRestoreNote = () => {
   });
 };
 
+export const useGetSummary = () => {
+  return useMutation({
+    mutationKey: ["get-summary"],
+    mutationFn: async ({ content }: { content: string }) => {
+      const token = localStorage.getItem("token");
+
+      const res = await axiosInstance.post(
+        `/entries/summarize`,
+        { content },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      return res.data;
+    },
+  });
+};
+
 export const useUpdateNote = () => {
   return useMutation({
     mutationKey: ["update-note"],
@@ -102,7 +122,7 @@ export const useUpdateNote = () => {
         synopsis: string;
         content: string;
         isPinned: boolean;
-        isBookMarked:boolean;
+        isBookMarked: boolean;
       };
     }) => {
       const token = localStorage.getItem("token");

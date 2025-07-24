@@ -6,4 +6,12 @@ import NoteForm from "./NoteForm";
 import TrashNote from "./TrashNote";
 import Note from "./Note";
 
-export { Navbar, NotesPane, SearchBar, ProtectedRoute, NoteForm, TrashNote,Note };
+export {
+  Navbar,
+  NotesPane,
+  SearchBar,
+  ProtectedRoute,
+  NoteForm,
+  TrashNote,
+  Note,
+};

@@ -18,7 +18,7 @@ const TrashNote = ({ setNotes, ...note }: TrashNoteProps) => {
 
   const handleDelete = async (id: string) => {
     await deleteNote(id);
-    setNotes((prev) => prev.filter((note) => note.id !== id ))
+    setNotes((prev) => prev.filter((note) => note.id !== id));
   };
 
   const handleRestore = async (id: string) => {

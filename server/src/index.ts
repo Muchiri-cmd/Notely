@@ -6,6 +6,7 @@ import userRouter from "./routes/user.routes";
 import entryRouter from "./routes/entry.routes";
 import { errorHandler } from "./middleware/errorHandler";
 import cors from "cors";
+import { loadSummarizer } from "./utils/summarizer";
 // import authenticateToken, {
 //   AuthorizedRequest,
 // } from "./middleware/auth.middleware";
@@ -18,8 +19,8 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "http://192.168.100.2:5173",
-      "http://192.168.100.2:3000",
+      "http://192.168.1.120:5173",
+      "http://192.168.1.120:3000",
     ],
     credentials: true,
   }),
@@ -47,6 +48,10 @@ app.use("/api/entries", entryRouter);
 
 app.use(errorHandler);
 const PORT = process.env.PORT || 4321;
+
+loadSummarizer().catch((err) => {
+  console.error("Failed to load summarizer on startup", err);
+});
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);

@@ -1,6 +1,12 @@
 import Note from "./Note";
 import { useGetNotes } from "../queries/notes";
-import { CircularProgress, Alert, Box, IconButton,Typography } from "@mui/material";
+import {
+  CircularProgress,
+  Alert,
+  Box,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import { useState, useEffect } from "react";
 import { CiGrid2H, CiGrid2V } from "react-icons/ci";
 import SearchBar from "./SearchBar";
@@ -84,39 +90,44 @@ const NotesPane = () => {
           },
         }}
       >
-    {filteredNotes?.length ? (
-      <>
-        {pinnedNotes.length > 0 && (
+        {filteredNotes?.length ? (
           <>
-            <Typography
-              variant="h6"
-              sx={{ gridColumn: "1 / -1", mb: 1, fontWeight: 600 }}
-            >
-              Pinned
-            </Typography>
-            {pinnedNotes.map((note: NoteType) => (
-              <Note key={note.id} {...note} />
-            ))}
-          </>
-        )}
+            {pinnedNotes.length > 0 && (
+              <>
+                <Typography
+                  variant="h6"
+                  sx={{ gridColumn: "1 / -1", mb: 1, fontWeight: 600 }}
+                >
+                  Pinned
+                </Typography>
+                {pinnedNotes.map((note: NoteType) => (
+                  <Note key={note.id} {...note} />
+                ))}
+              </>
+            )}
 
-        {otherNotes.length > 0 && (
-        <>
-          {pinnedNotes.length > 0 && otherNotes.length > 0 && (
-            <>
-              <Typography
-                variant="h6"
-                sx={{ gridColumn: "1 / -1", mt: 2, mb: 1, fontWeight: 600 }}
-              >
-                Others
-              </Typography>
-          </>
-          )} 
-           {otherNotes.map((note: NoteType) => (
-            <Note key={note.id} {...note} />
-          ))}     
-        </>
-    )}
+            {otherNotes.length > 0 && (
+              <>
+                {pinnedNotes.length > 0 && otherNotes.length > 0 && (
+                  <>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        gridColumn: "1 / -1",
+                        mt: 2,
+                        mb: 1,
+                        fontWeight: 600,
+                      }}
+                    >
+                      Others
+                    </Typography>
+                  </>
+                )}
+                {otherNotes.map((note: NoteType) => (
+                  <Note key={note.id} {...note} />
+                ))}
+              </>
+            )}
           </>
         ) : searchTerm ? (
           <Alert severity="info" sx={{ gridColumn: "1 / -1" }}>
@@ -128,7 +139,6 @@ const NotesPane = () => {
           </Alert>
         )}
       </Box>
-
     </Box>
   );
 };

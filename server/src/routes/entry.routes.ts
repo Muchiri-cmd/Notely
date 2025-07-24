@@ -8,6 +8,7 @@ import {
   getSingleEntry,
   restoreDeletedEntry,
   softDeleteEntry,
+  summarizeText,
   updateEntry,
 } from "../controllers/entry.controller";
 
@@ -21,5 +22,6 @@ router.patch("/:id", authenticateToken, updateEntry);
 router.delete("/:id", authenticateToken, deleteEntry);
 router.patch("/soft-delete/:id", authenticateToken, softDeleteEntry);
 router.patch("/restore/:id", authenticateToken, restoreDeletedEntry);
+router.post("/summarize", authenticateToken, summarizeText);
 
 export default router;

@@ -2,6 +2,8 @@ import { PrismaClient } from "@prisma/client";
 import { NextFunction, Response } from "express";
 import { AuthorizedRequest } from "../middleware/auth.middleware";
 import { noteSchema } from "../schema/entrySchema";
+import { pipeline } from "@xenova/transformers";
+import { loadSummarizer } from "../utils/summarizer";
 
 const client = new PrismaClient();
 
@@ -91,7 +93,8 @@ const updateEntry = async (
   try {
     const { id } = req.params;
     const validatedRequest = noteSchema.parse(req.body);
-    const { title, synopsis, content,isPinned,isBookMarked } = validatedRequest;
+    const { title, synopsis, content, isPinned, isBookMarked } =
+      validatedRequest;
 
     const updatedEntry = await client.entry.update({
       where: { id },
@@ -185,6 +188,25 @@ const getDeletedEntries = async (
     next(error);
   }
 };
+
+const summarizeText = async (
+  req: AuthorizedRequest,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { content } = req.body;
+
+  try {
+    const pipe = await loadSummarizer();
+
+    const response = await pipe(content);
+    const summary = (response[0] as { summary_text: string }).summary_text;
+    res.status(200).json({ summary });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export {
   createEntry,
   getAllEntries,
@@ -194,4 +216,5 @@ export {
   restoreDeletedEntry,
   deleteEntry,
   getDeletedEntries,
+  summarizeText,
 };
