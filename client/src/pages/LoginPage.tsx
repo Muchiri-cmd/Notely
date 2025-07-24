@@ -53,7 +53,10 @@ const LoginPage = () => {
         <Paper
           elevation={3}
           sx={{
-            width: 500,
+            width: {
+              md: 500,
+              xs: 350,
+            },
             px: 4,
             py: 2,
             display: "flex",

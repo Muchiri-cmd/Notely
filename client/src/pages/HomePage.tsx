@@ -109,7 +109,7 @@ const HomePage = () => {
                   lineHeight: 1.2,
                 }}
               >
-                The Future of
+                The Hub of
                 <br />
                 Digital Notes
               </Typography>
@@ -124,8 +124,8 @@ const HomePage = () => {
                 }}
               >
                 Organize and streamline your thoughts, ideas and knowledge
-                management with seamless digital note-taking, tracking and
-                updating.
+                management with seamless digital note-taking, tracking, updating
+                and AI-summaries
               </Typography>
 
               <Box
@@ -190,7 +190,7 @@ const HomePage = () => {
               <Paper
                 elevation={0}
                 sx={{
-                  height: { xs: "50vh", md: "65vh" },
+                  height: { xs: "55vh", md: "68vh" },
                   width: "100%",
                   maxWidth: "500px",
                   borderRadius: "20px",
@@ -228,7 +228,7 @@ const HomePage = () => {
                   sx={{
                     display: "flex",
                     flexDirection: "column",
-                    gap: 1.5,
+                    gap: 1,
                   }}
                 >
                   {[
@@ -246,6 +246,11 @@ const HomePage = () => {
                       title: "Shopping List",
                       preview:
                         "Sneakers,Backlit Keyboard, Phone Holder,Pods...",
+                    },
+                    {
+                      title: "AI Conference 2025",
+                      preview:
+                        "AI is the new electricity , embrace AI & ride the wave...",
                     },
                   ].map((note, idx) => (
                     <Box
@@ -302,7 +307,6 @@ const HomePage = () => {
                       fontSize: { xs: "2rem", md: "3rem" },
                       fontWeight: 600,
                       mb: 1,
-                      color: "black",
                     }}
                   >
                     {stat.number}
@@ -363,7 +367,13 @@ const HomePage = () => {
             </Typography>
           </Box>
 
-          <Grid container spacing={8}>
+          <Grid
+            container
+            spacing={{
+              xs: 8,
+              md: 1.5,
+            }}
+          >
             {features.map((feature, idx) => (
               <Grid size={{ xs: 12, sm: 6, md: 3 }} key={idx}>
                 <Paper
@@ -376,7 +386,7 @@ const HomePage = () => {
                     height: "100%",
                     transition: "all 0.3s ease",
                     "&:hover": {
-                      transform: "translateY(-10px)",
+                      transform: "translateY(-8px)",
                       boxShadow: 2,
                       cursor: "pointer",
                     },

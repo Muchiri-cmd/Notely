@@ -269,7 +269,7 @@ const NotePage = () => {
                           </Typography>
                         </>
                       ) : (
-                        "Summarize"
+                        "AI - Summarize"
                       )}
                     </Button>
                   </Box>
