@@ -29,7 +29,7 @@ const Note = (note: NoteType) => {
     if (type === "bookmark") setBookMarked(!bookMarked);
 
     await updateNote({ id: id!, data: updatedNote });
-    queryClient.invalidateQueries(["fetch-notes"]);
+    queryClient.invalidateQueries({ queryKey: ["fetch-notes"] });
   };
 
   return (

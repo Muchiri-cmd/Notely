@@ -5,6 +5,7 @@ import HomePage from "./HomePage";
 import NotePage from "./NotePage";
 import UserProfile from "./UserProfile";
 import Trash from "./Trash";
+import BookMarks from "./BookMarks";
 
 export {
   LoginPage,
@@ -14,4 +15,5 @@ export {
   NotePage,
   UserProfile,
   Trash,
+  BookMarks,
 };

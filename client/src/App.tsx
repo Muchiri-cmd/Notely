@@ -7,6 +7,7 @@ import {
   NotePage,
   UserProfile,
   Trash,
+  BookMarks,
 } from "./pages";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { NoteForm } from "./components";
@@ -59,6 +60,15 @@ const App = () => {
           element={
             <ProtectedRoute>
               <Trash />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/bookmarks"
+          element={
+            <ProtectedRoute>
+              <BookMarks />
             </ProtectedRoute>
           }
         />

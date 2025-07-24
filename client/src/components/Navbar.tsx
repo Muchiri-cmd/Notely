@@ -500,6 +500,7 @@ const Navbar = () => {
                         bgcolor: "#f8fafc",
                         cursor: "pointer",
                       },
+                      bgcolor: "white",
                     }}
                     component="button"
                   >
