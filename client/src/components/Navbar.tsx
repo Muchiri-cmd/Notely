@@ -59,7 +59,7 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const hideIconPaths = ["/create", "/user", "/note"];
+  const hideIconPaths = ["/create", "/user", "/note", "/"];
   const shouldHideIcon = hideIconPaths.some(
     (path) =>
       location.pathname === path || location.pathname.startsWith(`${path}/`),
@@ -177,7 +177,7 @@ const Navbar = () => {
                 >
                   My Notes
                 </Button>
-                <Button
+                {/* <Button
                   component={Link}
                   to="/create"
                   variant="text"
@@ -195,7 +195,7 @@ const Navbar = () => {
                   }}
                 >
                   Create
-                </Button>
+                </Button> */}
                 <Button
                   component={Link}
                   to="/bookmarks"
@@ -266,24 +266,7 @@ const Navbar = () => {
                 </Box>
 
                 <IconButton
-                  onClick={toggleDrawer}
-                  sx={{
-                    display: { xs: "flex", md: "none" },
-                    color: "white",
-                    bgcolor: "#3182ce",
-                    borderRadius: 2,
-                    p: 1.5,
-                    "&:hover": {
-                      bgcolor: "#f1f5f9",
-                      color: "#334155",
-                    },
-                  }}
-                >
-                  <GiHamburgerMenu size={20} />
-                </IconButton>
-
-                <IconButton
-                  onClick={toggleDrawer}
+                  // onClick={toggleDrawer}
                   sx={{
                     p: 0,
                     display: { xs: "none", md: "inline-flex" },
@@ -312,6 +295,22 @@ const Navbar = () => {
                   >
                     {!userData.avatar && initials}
                   </Avatar>
+                </IconButton>
+                <IconButton
+                  onClick={toggleDrawer}
+                  sx={{
+                    display: "flex",
+                    color: "white",
+                    bgcolor: "#3182ce",
+                    borderRadius: "50%",
+                    p: 1.2,
+                    "&:hover": {
+                      bgcolor: "#f1f5f9",
+                      color: "#334155",
+                    },
+                  }}
+                >
+                  <GiHamburgerMenu size={20} />
                 </IconButton>
               </Stack>
             </>
@@ -407,8 +406,7 @@ const Navbar = () => {
                 fontSize: "1.125rem",
               }}
             >
-              <Box sx={{ display: { xs: "block", md: "none" } }}>Menu</Box>
-              <Box sx={{ display: { xs: "none", md: "block" } }}>Profile</Box>
+              <Box>Menu</Box>
             </Typography>
             <IconButton
               onClick={handleDrawerClose}
@@ -485,8 +483,8 @@ const Navbar = () => {
             </Typography>
           </Box>
 
-          <Box sx={{ flexGrow: 1, py: 2 }}>
-            <Box sx={{ display: { xs: "block", md: "none" } }}>
+          <Box sx={{ flexGrow: 1 }}>
+            <Box sx={{ display: { xs: "block" } }}>
               <List sx={{ px: 2 }}>
                 {mobileMenuItems.map((item, index) => (
                   <ListItem
@@ -494,8 +492,6 @@ const Navbar = () => {
                     onClick={() => handleNavigation(item.path)}
                     sx={{
                       borderRadius: 3,
-                      mb: 0.5,
-                      py: 1,
                       "&:hover": {
                         bgcolor: "#f8fafc",
                         cursor: "pointer",
@@ -516,41 +512,38 @@ const Navbar = () => {
                   </ListItem>
                 ))}
               </List>
-              <Divider sx={{ mx: 3, my: 2, bgcolor: "#f1f5f9" }} />
-            </Box>
-
-            <List sx={{ px: 2 }}>
-              {userMenuItems.map((item, index) => (
-                <ListItem
-                  key={index}
-                  onClick={() => handleNavigation(item.path)}
-                  sx={{
-                    borderRadius: 3,
-                    mb: 1,
-                    py: 1.5,
-                    bgcolor: "white",
-                    "&:hover": {
-                      bgcolor: "#f8fafc",
-                      cursor: "pointer",
-                    },
-                  }}
-                  component="button"
-                >
-                  <ListItemIcon
+              <Divider sx={{ mx: 3, bgcolor: "#f1f5f9" }} />
+              <List sx={{ px: 2 }}>
+                {userMenuItems.map((item, index) => (
+                  <ListItem
+                    key={index}
+                    onClick={() => handleNavigation(item.path)}
                     sx={{
-                      color: "#475569",
-                      minWidth: 44,
+                      borderRadius: 3,
+                      bgcolor: "white",
+                      "&:hover": {
+                        bgcolor: "#f8fafc",
+                        cursor: "pointer",
+                      },
                     }}
+                    component="button"
                   >
-                    {item.icon}
-                  </ListItemIcon>
-                  <ListItemText primary={item.text} />
-                </ListItem>
-              ))}
-            </List>
+                    <ListItemIcon
+                      sx={{
+                        color: "#475569",
+                        minWidth: 44,
+                      }}
+                    >
+                      {item.icon}
+                    </ListItemIcon>
+                    <ListItemText primary={item.text} />
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
           </Box>
 
-          <Box sx={{ p: 3, borderTop: "1px solid #f1f5f9" }}>
+          <Box sx={{ p: 1, borderTop: "1px solid #f1f5f9" }}>
             <Button
               fullWidth
               variant="contained"
@@ -559,7 +552,7 @@ const Navbar = () => {
               onClick={handleLogout}
               sx={{
                 borderRadius: 3,
-                py: 1.5,
+                py: 1,
                 textTransform: "none",
                 fontWeight: 600,
                 bgcolor: "#dc2626",

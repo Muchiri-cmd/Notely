@@ -1,10 +1,12 @@
 import { Navbar } from "../components";
-import { Box } from "@mui/material";
-import { Alert, CircularProgress } from "@mui/material";
+import { Box, Button } from "@mui/material";
+import { Alert, CircularProgress, Typography } from "@mui/material";
 import { useGetDeletedNotes } from "../queries/notes";
 import { TrashNote } from "../components";
 import type NoteType from "../types/note";
 import { useEffect, useState } from "react";
+import { IoArrowBackOutline } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 const Trash = () => {
   const { data: notes = [], isPending, isSuccess } = useGetDeletedNotes();
@@ -19,11 +21,33 @@ const Trash = () => {
   return (
     <>
       <Navbar />
+      <Box sx={{ mb: 1, mt: "75px", p: 2 }}>
+        <Button
+          component={Link}
+          to="/dashboard"
+          startIcon={<IoArrowBackOutline />}
+          variant="outlined"
+          sx={{
+            borderRadius: "5px",
+            textTransform: "none",
+            fontWeight: 600,
+            p: 2,
+
+            transition: "all 0.2s ease-in-out",
+            "&:hover": {
+              boxShadow: 2,
+              borderColor: "primary.main",
+            },
+          }}
+        >
+          Back to Notes
+        </Button>
+      </Box>
       <Box
         sx={{
           p: 2,
           display: "flex",
-          mt: "60px",
+          // mt: "60px",
           flexDirection: "column",
           // border:'2px solid red'
         }}
@@ -31,9 +55,9 @@ const Trash = () => {
         {isPending ? (
           <CircularProgress />
         ) : isSuccess && notes?.length === 0 ? (
-          <Alert severity="info" sx={{ gridColumn: "1 / -1" }}>
-            Nothing to show here
-          </Alert>
+          <Box textAlign="center" mt={5}>
+            <Typography variant="h6">Nothing to show here.</Typography>
+          </Box>
         ) : (
           <>
             <Box>
