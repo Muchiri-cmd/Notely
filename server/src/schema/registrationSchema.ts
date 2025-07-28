@@ -16,7 +16,7 @@ export const registrationSchema = z.object({
           "Password is too weak. Make sure to include atleast 8 special character, numbers, upper and lowercase letters",
       },
     ),
-  // avatar: z.string(),
+  avatar: z.string().optional(),
   userName: z.string().min(1, "Username must be atleast 1 character"),
   lastName: z.string().min(2, "Name must be atleast 2 characters"),
   firstName: z.string().min(2, "Name must be atleast 2 characters"),
