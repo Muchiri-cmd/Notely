@@ -32,14 +32,6 @@ const NotesPane = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  if (isPending) {
-    return (
-      <Box display="flex" justifyContent="center" mt={4}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-
   if (isError) {
     return (
       <Alert severity="error" sx={{ mt: 2 }}>
@@ -78,38 +70,42 @@ const NotesPane = () => {
           <CiGrid2V size={30} />
         </IconButton>
       </Box>
-      <Box
-        sx={{
-          p: 2,
-          display: "grid",
-          gap: 1,
-          justifyContent: "center",
-          gridTemplateColumns: {
-            xs: columns === 1 ? "1fr" : "repeat(2, 1fr)",
-            sm: "repeat(auto-fill, minmax(300px, 1fr))",
-          },
-        }}
-      >
-        {filteredNotes?.length ? (
-          <>
-            {pinnedNotes.length > 0 && (
-              <>
-                <Typography
-                  variant="h6"
-                  sx={{ gridColumn: "1 / -1", mb: 1, fontWeight: 600 }}
-                >
-                  Pinned
-                </Typography>
-                {pinnedNotes.map((note: NoteType) => (
-                  <Note key={note.id} {...note} />
-                ))}
-              </>
-            )}
+      {isPending ? (
+        <Box display="flex" justifyContent="center" mt={4}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            p: 2,
+            display: "grid",
+            gap: 1,
+            justifyContent: "center",
+            gridTemplateColumns: {
+              xs: columns === 1 ? "1fr" : "repeat(2, 1fr)",
+              sm: "repeat(auto-fill, minmax(300px, 1fr))",
+            },
+          }}
+        >
+          {filteredNotes?.length ? (
+            <>
+              {pinnedNotes.length > 0 && (
+                <>
+                  <Typography
+                    variant="h6"
+                    sx={{ gridColumn: "1 / -1", mb: 1, fontWeight: 600 }}
+                  >
+                    Pinned
+                  </Typography>
+                  {pinnedNotes.map((note: NoteType) => (
+                    <Note key={note.id} {...note} />
+                  ))}
+                </>
+              )}
 
-            {otherNotes.length > 0 && (
-              <>
-                {pinnedNotes.length > 0 && otherNotes.length > 0 && (
-                  <>
+              {otherNotes.length > 0 && (
+                <>
+                  {pinnedNotes.length > 0 && otherNotes.length > 0 && (
                     <Typography
                       variant="h6"
                       sx={{
@@ -121,24 +117,24 @@ const NotesPane = () => {
                     >
                       Others
                     </Typography>
-                  </>
-                )}
-                {otherNotes.map((note: NoteType) => (
-                  <Note key={note.id} {...note} />
-                ))}
-              </>
-            )}
-          </>
-        ) : searchTerm ? (
-          <Alert severity="info" sx={{ gridColumn: "1 / -1" }}>
-            No notes match your search.
-          </Alert>
-        ) : (
-          <Alert severity="info" sx={{ gridColumn: "1 / -1" }}>
-            You don’t have any notes yet. Add notes.
-          </Alert>
-        )}
-      </Box>
+                  )}
+                  {otherNotes.map((note: NoteType) => (
+                    <Note key={note.id} {...note} />
+                  ))}
+                </>
+              )}
+            </>
+          ) : searchTerm ? (
+            <Alert severity="info" sx={{ gridColumn: "1 / -1" }}>
+              No notes match your search.
+            </Alert>
+          ) : (
+            <Alert severity="info" sx={{ gridColumn: "1 / -1" }}>
+              You don’t have any notes yet. Add notes.
+            </Alert>
+          )}
+        </Box>
+      )}
     </Box>
   );
 };

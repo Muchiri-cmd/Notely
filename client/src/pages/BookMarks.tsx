@@ -41,7 +41,11 @@ const BookMarks = () => {
         </Button>
       </Box>
       <Box sx={{ p: 3 }}>
-        {isPending && <CircularProgress />}
+        {isPending && (
+          <Box display="flex" justifyContent="center" mt={4}>
+            <CircularProgress />
+          </Box>
+        )}
         {isError && (
           <Typography color="error">
             Something went wrong while fetching notes.

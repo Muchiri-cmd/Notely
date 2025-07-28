@@ -53,7 +53,9 @@ const Trash = () => {
         }}
       >
         {isPending ? (
-          <CircularProgress />
+          <Box display="flex" justifyContent="center" mt={4}>
+            <CircularProgress />
+          </Box>
         ) : isSuccess && notes?.length === 0 ? (
           <Box textAlign="center" mt={5}>
             <Typography variant="h6">Nothing to show here.</Typography>

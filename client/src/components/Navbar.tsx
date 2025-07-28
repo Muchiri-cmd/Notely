@@ -300,8 +300,8 @@ const Navbar = () => {
                   onClick={toggleDrawer}
                   sx={{
                     display: {
-                      xs:'flex',
-                      md:'none'
+                      xs: "flex",
+                      md: "none",
                     },
                     color: "white",
                     bgcolor: "#3182ce",
