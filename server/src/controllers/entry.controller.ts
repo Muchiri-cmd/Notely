@@ -5,7 +5,9 @@ import { noteSchema } from "../schema/entrySchema";
 // import { pipeline } from "@xenova/transformers";
 // import { loadSummarizer } from "../utils/summarizer";
 import { GoogleGenAI } from "@google/genai";
-const ai = new GoogleGenAI({});
+const ai = new GoogleGenAI({
+  apiKey:process.env.GEMINI_API_KEY
+});
 
 
 const client = new PrismaClient();
@@ -212,13 +214,14 @@ const summarizeText = async (
           role: "user",
           parts: [
             {
-              text: `Summarize the following content:\n\n${content}`,
+              text: `Summarize the following note in the simplest , most concise way but covering all key points for writer to read:\n\n${content}`,
             },
           ],
         },
       ],
     });
     const summary = result.text;
+    // console.log("summary:",summary)
 
     res.status(200).json({ summary });
 
