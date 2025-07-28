@@ -50,9 +50,9 @@ app.use("/api/entries", entryRouter);
 app.use(errorHandler);
 const PORT = process.env.PORT || 4321;
 
-loadSummarizer().catch((err) => {
-  console.error("Failed to load summarizer on startup", err);
-});
+// loadSummarizer().catch((err) => {
+//   console.error("Failed to load summarizer on startup", err);
+// });
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
