@@ -256,6 +256,7 @@ const NotePage = () => {
                         },
                       }}
                       onClick={handleSummarize}
+                      disabled={true}
                     >
                       {PendingSummary ? (
                         <>
@@ -269,7 +270,7 @@ const NotePage = () => {
                           </Typography>
                         </>
                       ) : (
-                        "AI - Summarize"
+                        "AI - Summarize(In development)"
                       )}
                     </Button>
                   </Box>
