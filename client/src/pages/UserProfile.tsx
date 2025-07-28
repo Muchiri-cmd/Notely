@@ -76,7 +76,7 @@ const UserProfile = () => {
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "notely_preset");
+    formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
 
     setIsUploading(true);
 
