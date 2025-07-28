@@ -2,8 +2,11 @@ import { PrismaClient } from "@prisma/client";
 import { NextFunction, Response } from "express";
 import { AuthorizedRequest } from "../middleware/auth.middleware";
 import { noteSchema } from "../schema/entrySchema";
-import { pipeline } from "@xenova/transformers";
-import { loadSummarizer } from "../utils/summarizer";
+// import { pipeline } from "@xenova/transformers";
+// import { loadSummarizer } from "../utils/summarizer";
+import { GoogleGenAI } from "@google/genai";
+const ai = new GoogleGenAI({});
+
 
 const client = new PrismaClient();
 
@@ -197,11 +200,28 @@ const summarizeText = async (
   const { content } = req.body;
 
   try {
-    const pipe = await loadSummarizer();
+    // const pipe = await loadSummarizer();
 
-    const response = await pipe(content);
-    const summary = (response[0] as { summary_text: string }).summary_text;
+    // const response = await pipe(content);
+    // const summary = (response[0] as { summary_text: string }).summary_text;
+    // res.status(200).json({ summary });
+    const result = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: [
+        {
+          role: "user",
+          parts: [
+            {
+              text: `Summarize the following content:\n\n${content}`,
+            },
+          ],
+        },
+      ],
+    });
+    const summary = result.text;
+
     res.status(200).json({ summary });
+
   } catch (error) {
     next(error);
   }
