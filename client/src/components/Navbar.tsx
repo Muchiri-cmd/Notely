@@ -266,7 +266,7 @@ const Navbar = () => {
                 </Box>
 
                 <IconButton
-                  // onClick={toggleDrawer}
+                  onClick={toggleDrawer}
                   sx={{
                     p: 0,
                     display: { xs: "none", md: "inline-flex" },
@@ -299,7 +299,10 @@ const Navbar = () => {
                 <IconButton
                   onClick={toggleDrawer}
                   sx={{
-                    display: "flex",
+                    display: {
+                      xs:'flex',
+                      md:'none'
+                    },
                     color: "white",
                     bgcolor: "#3182ce",
                     borderRadius: "50%",
