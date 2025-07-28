@@ -135,3 +135,27 @@ export const useUpdateNote = () => {
     },
   });
 };
+
+export const useAskAI = () => {
+  return useMutation({
+    mutationFn: async ({
+      content,
+      question,
+    }: {
+      content: string;
+      question: string;
+    }) => {
+      const token = localStorage.getItem("token");
+      const res = await axiosInstance.post(
+        "/entries/ask",
+        { content, question },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      return res.data;
+    },
+  });
+};

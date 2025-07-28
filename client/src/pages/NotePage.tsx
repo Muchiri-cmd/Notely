@@ -21,12 +21,14 @@ import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import React, { useEffect, useState } from "react";
 import {
+  useAskAI,
   useGetSummary,
   useSoftDeleteNote,
   useUpdateNote,
 } from "../mutations/notes";
 import { useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
+import AskAIModal from "../components/AskAIModal";
 
 const NotePage = () => {
   const { id } = useParams();
@@ -41,6 +43,9 @@ const NotePage = () => {
   const [open, setOpen] = useState(false);
   const [summaryText, setSummaryText] = useState("");
 
+  const [askModalOpen, setAskModalOpen] = useState(false);
+  const [aiAnswer, setAiAnswer] = useState("");
+
   const { mutateAsync: deleteNote } = useSoftDeleteNote();
 
   const {
@@ -51,6 +56,7 @@ const NotePage = () => {
   } = useUpdateNote();
 
   const { mutateAsync: summarize, isPending: PendingSummary } = useGetSummary();
+  const { mutateAsync: askAI, isPending: isAsking } = useAskAI();
 
   const navigate = useNavigate();
 
@@ -97,6 +103,17 @@ const NotePage = () => {
       console.error("Failed to summarize", error);
     }
   };
+
+  const handleAskAI = async (question: string) => {
+    try {
+      // console.log("asking AI");
+      const response = await askAI({ content, question });
+      setAiAnswer(response.answer);
+    } catch (err) {
+      setAiAnswer("Sorry, something went wrong.");
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -238,8 +255,28 @@ const NotePage = () => {
                     sx={{
                       display: "flex",
                       justifyContent: "flex-end",
+                      gap: 2,
                     }}
                   >
+                    <Button
+                      variant="outlined"
+                      onClick={() => setAskModalOpen(true)}
+                      sx={{
+                        color: "#4b0082",
+                        borderColor: "#4b0082",
+                        backgroundColor: "#f0e6ff",
+                        fontWeight: 600,
+                        textTransform: "none",
+                        borderRadius: "8px 24px 8px 24px",
+                        "&:hover": {
+                          backgroundColor: "#e0d2ff",
+                        },
+                        py: 1,
+                        mb: 2,
+                      }}
+                    >
+                      Ask AI
+                    </Button>
                     <Button
                       variant="outlined"
                       sx={{
@@ -364,6 +401,13 @@ const NotePage = () => {
             </Typography>
           </Box>
         </Modal>
+        <AskAIModal
+          open={askModalOpen}
+          onClose={() => setAskModalOpen(false)}
+          onAsk={handleAskAI}
+          loading={isAsking}
+          response={aiAnswer}
+        />
       </Container>
     </>
   );
