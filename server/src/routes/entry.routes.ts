@@ -10,6 +10,7 @@ import {
   softDeleteEntry,
   summarizeText,
   updateEntry,
+  askAI
 } from "../controllers/entry.controller";
 
 const router = Router();
@@ -23,5 +24,6 @@ router.delete("/:id", authenticateToken, deleteEntry);
 router.patch("/soft-delete/:id", authenticateToken, softDeleteEntry);
 router.patch("/restore/:id", authenticateToken, restoreDeletedEntry);
 router.post("/summarize", authenticateToken, summarizeText);
+router.post('/ask',authenticateToken,askAI)
 
 export default router;

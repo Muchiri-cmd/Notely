@@ -230,6 +230,40 @@ const summarizeText = async (
   }
 };
 
+const askAI = async (req: AuthorizedRequest, res: Response, next: NextFunction) => {
+  const { content, question } = req.body;
+
+  try {
+    const result = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: [
+        {
+          role: "user",
+          parts: [
+            {
+              text: `Here is a note:\n\n${content}`,
+            },
+          ],
+        },
+        {
+          role: "user",
+          parts: [
+            {
+              text: `Question: ${question}`,
+            },
+          ],
+        },
+      ],
+    });
+
+    const answer = result.text;
+    res.status(200).json({ answer });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 export {
   createEntry,
   getAllEntries,
@@ -240,4 +274,5 @@ export {
   deleteEntry,
   getDeletedEntries,
   summarizeText,
+  askAI
 };

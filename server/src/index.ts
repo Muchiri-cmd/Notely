@@ -19,8 +19,8 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "http://192.168.1.122:5173",
-      "http://192.168.1.122:3000",
+      "http://192.168.100.2:5173",
+      "http://192.168.100.2:3000",
       "https://notely-client.onrender.com"
     ],
     credentials: true,
