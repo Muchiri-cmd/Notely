@@ -1,5 +1,5 @@
 import { Navbar } from "../components";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { Alert, CircularProgress, Typography } from "@mui/material";
 import { useGetDeletedNotes } from "../queries/notes";
 import { TrashNote } from "../components";

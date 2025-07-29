@@ -1,4 +1,4 @@
-import { Box, Typography, CircularProgress, Button } from "@mui/material";
+import { Box, Typography, CircularProgress} from "@mui/material";
 import { useGetNotes } from "../queries/notes";
 import Navbar from "../components/Navbar";
 import Note from "../components/Note";
