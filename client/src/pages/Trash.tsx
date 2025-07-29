@@ -5,8 +5,7 @@ import { useGetDeletedNotes } from "../queries/notes";
 import { TrashNote } from "../components";
 import type NoteType from "../types/note";
 import { useEffect, useState } from "react";
-import { IoArrowBackOutline } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import BackButton from "../components/BackButton";
 
 const Trash = () => {
   const { data: notes = [], isPending, isSuccess } = useGetDeletedNotes();
@@ -21,28 +20,7 @@ const Trash = () => {
   return (
     <>
       <Navbar />
-      <Box sx={{ mb: 1, mt: "75px", p: 2 }}>
-        <Button
-          component={Link}
-          to="/dashboard"
-          startIcon={<IoArrowBackOutline />}
-          variant="outlined"
-          sx={{
-            borderRadius: "5px",
-            textTransform: "none",
-            fontWeight: 600,
-            p: 2,
-
-            transition: "all 0.2s ease-in-out",
-            "&:hover": {
-              boxShadow: 2,
-              borderColor: "primary.main",
-            },
-          }}
-        >
-          Back to Notes
-        </Button>
-      </Box>
+      <BackButton />
       <Box
         sx={{
           p: 2,

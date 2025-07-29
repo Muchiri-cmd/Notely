@@ -12,6 +12,7 @@ import {
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { HiSparkles } from "react-icons/hi";
+import ReactMarkdown from "react-markdown";
 
 interface AskAIModalProps {
   open: boolean;
@@ -77,18 +78,65 @@ const AskAIModal = ({
         {response && (
           <Box
             sx={{
-              bgcolor: "#f5f5f5",
-              border: "1px solid #ddd",
-              borderRadius: 1,
-              p: 2,
+              fontFamily: "system-ui, sans-serif",
+              fontSize: "1rem",
+              lineHeight: 1.5,
+              color: "text.primary",
+              whiteSpace: "pre-wrap",
+              wordBreak: "break-word",
+              borderRadius: 2,
+              backgroundColor: "background.paper",
+              boxShadow: 1,
+              p: 3,
+              "& h1": {
+                fontSize: "1.8rem",
+                fontWeight: 700,
+                mt: 1,
+                mb: 1,
+              },
+              "& h2": {
+                fontSize: "1.5rem",
+                fontWeight: 600,
+                mt: 1,
+                mb: 1,
+              },
+              "& p": {
+                mb: 1,
+              },
+              "& code": {
+                backgroundColor: "#f5f5f5",
+                padding: "2px 4px",
+                borderRadius: "4px",
+                fontFamily: "monospace",
+                fontSize: "0.85rem",
+              },
+              "& pre": {
+                backgroundColor: "#f0f0f0",
+                padding: 2,
+                borderRadius: 2,
+                overflowX: "auto",
+              },
+              "& ul": {
+                pl: 1,
+                mb: 1,
+              },
+              "& blockquote": {
+                borderLeft: "4px solid #ccc",
+                margin: "1rem 0",
+                paddingLeft: "1rem",
+                color: "text.secondary",
+                fontStyle: "italic",
+              },
+              "& a": {
+                color: "primary.main",
+                textDecoration: "underline",
+                "&:hover": {
+                  textDecoration: "none",
+                },
+              },
             }}
           >
-            <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-              AI Response:
-            </Typography>
-            <Typography variant="body1" whiteSpace="pre-line">
-              {response}
-            </Typography>
+            <ReactMarkdown>{response}</ReactMarkdown>
           </Box>
         )}
       </DialogContent>

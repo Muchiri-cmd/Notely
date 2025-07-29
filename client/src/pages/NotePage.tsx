@@ -12,11 +12,10 @@ import {
   TextField,
   Modal,
 } from "@mui/material";
+import BackButton from "../components/BackButton";
 import { IoIosCloseCircle } from "react-icons/io";
 import Navbar from "../components/Navbar";
 import { useGetNote } from "../queries/notes";
-import { Link } from "react-router-dom";
-import { IoArrowBackOutline } from "react-icons/io5";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import React, { useEffect, useState } from "react";
@@ -130,28 +129,7 @@ const NotePage = () => {
           </Alert>
         )}
 
-        <Box sx={{ mb: 3 }}>
-          <Button
-            component={Link}
-            to="/dashboard"
-            startIcon={<IoArrowBackOutline />}
-            variant="outlined"
-            sx={{
-              borderRadius: "5px",
-              textTransform: "none",
-              fontWeight: 600,
-              p: 2,
-
-              transition: "all 0.2s ease-in-out",
-              "&:hover": {
-                boxShadow: 2,
-                borderColor: "primary.main",
-              },
-            }}
-          >
-            Back to Notes
-          </Button>
-        </Box>
+        <BackButton />
 
         {isEditing ? (
           <>
@@ -397,7 +375,7 @@ const NotePage = () => {
               </IconButton>
             </Box>
             <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
-              {summaryText}
+              <ReactMarkdown>{summaryText}</ReactMarkdown>
             </Typography>
           </Box>
         </Modal>

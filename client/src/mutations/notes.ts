@@ -159,3 +159,31 @@ export const useAskAI = () => {
     },
   });
 };
+
+export const useSuggestNote = () => {
+  return useMutation({
+    mutationFn: async ({
+      title,
+      synopsis,
+      content,
+    }: {
+      title: string;
+      synopsis: string;
+      content: string;
+    }) => {
+      const token = localStorage.getItem("token");
+
+      const res = await axiosInstance.post(
+        "/entries/suggest",
+        { title, synopsis, content },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      return res.data;
+    },
+  });
+};

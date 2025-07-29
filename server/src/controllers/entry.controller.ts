@@ -6,9 +6,8 @@ import { noteSchema } from "../schema/entrySchema";
 // import { loadSummarizer } from "../utils/summarizer";
 import { GoogleGenAI } from "@google/genai";
 const ai = new GoogleGenAI({
-  apiKey:process.env.GEMINI_API_KEY
+  apiKey: process.env.GEMINI_API_KEY,
 });
-
 
 const client = new PrismaClient();
 
@@ -224,13 +223,16 @@ const summarizeText = async (
     // console.log("summary:",summary)
 
     res.status(200).json({ summary });
-
   } catch (error) {
     next(error);
   }
 };
 
-const askAI = async (req: AuthorizedRequest, res: Response, next: NextFunction) => {
+const askAI = async (
+  req: AuthorizedRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   const { content, question } = req.body;
 
   try {
@@ -263,6 +265,61 @@ const askAI = async (req: AuthorizedRequest, res: Response, next: NextFunction) 
   }
 };
 
+const suggestContent = async (
+  req: AuthorizedRequest,
+  res: Response,
+  next: NextFunction,
+) => {
+  // console.log("asking for suggestion  ");
+  const validatedRequest = noteSchema.parse(req.body);
+
+  const { title, synopsis, content } = validatedRequest;
+  try {
+    const result = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: [
+        {
+          role: "user",
+          parts: [
+            {
+              text: `Here is a note draft:\n\nTitle: ${title}\n\nSynopsis: ${synopsis}\n\nContent:\n${content}`,
+            },
+          ],
+        },
+        {
+          role: "user",
+          parts: [
+            {
+              text: `Continue writing ONLY the next sentence or two that would naturally follow this content. Do not repeat any of the existing content. Return only the continuation text that should be appended.`,
+            },
+          ],
+        },
+      ],
+    });
+    let suggestion = result.text?.trim();
+
+    if (suggestion?.toLowerCase().includes(content.toLowerCase().slice(-50))) {
+      const contentWords = content.trim().split(" ");
+      const lastFewWords = contentWords.slice(-10).join(" ");
+      const suggestionStart = suggestion.indexOf(lastFewWords);
+
+      if (suggestionStart !== -1) {
+        suggestion = suggestion
+          .slice(suggestionStart + lastFewWords.length)
+          .trim();
+      }
+    }
+
+    const lastChar = content.trim().slice(-1);
+    if (suggestion && !lastChar.match(/[.!?:;,\s]/)) {
+      suggestion = " " + suggestion;
+    }
+
+    res.status(200).json({ suggestion });
+  } catch (err) {
+    next(err);
+  }
+};
 
 export {
   createEntry,
@@ -274,5 +331,6 @@ export {
   deleteEntry,
   getDeletedEntries,
   summarizeText,
-  askAI
+  askAI,
+  suggestContent,
 };

@@ -16,8 +16,7 @@ import { useGetUser } from "../queries/user";
 import { useEffect } from "react";
 import { useUpdateUser } from "../mutations/user";
 import { useUpdatePassword } from "../mutations/auth";
-import { Link } from "react-router-dom";
-import { IoArrowBackOutline } from "react-icons/io5";
+import BackButton from "../components/BackButton";
 
 const UserProfile = () => {
   const { data } = useGetUser();
@@ -76,7 +75,10 @@ const UserProfile = () => {
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+    formData.append(
+      "upload_preset",
+      import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET,
+    );
 
     setIsUploading(true);
 
@@ -130,29 +132,7 @@ const UserProfile = () => {
   return (
     <>
       <Navbar />
-      <Box sx={{ mt: "70px", p: 2 }}>
-        <Button
-          component={Link}
-          to="/dashboard"
-          startIcon={<IoArrowBackOutline />}
-          variant="outlined"
-          sx={{
-            borderRadius: "5px",
-            textTransform: "none",
-            fontWeight: 600,
-            p: 2,
-
-            transition: "all 0.2s ease-in-out",
-            "&:hover": {
-              backgroundColor: "primary.light",
-              boxShadow: 2,
-              borderColor: "primary.main",
-            },
-          }}
-        >
-          Back to Notes
-        </Button>
-      </Box>
+      <BackButton />
       <Box sx={{ py: 1, px: 2, maxWidth: "1600px", mx: "auto" }}>
         <Grid container spacing={4}>
           <Grid size={{ xs: 12, md: 6 }} sx={{ mb: 8 }}>
